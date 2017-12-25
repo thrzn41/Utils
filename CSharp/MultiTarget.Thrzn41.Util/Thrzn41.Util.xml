@@ -1,0 +1,486 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Thrzn41.Util</name>
+    </assembly>
+    <members>
+        <member name="T:Thrzn41.Util.CryptoRandom">
+            <summary>
+            Provides features for generating cryptographic ramdom number.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Thrzn41.Util.CryptoRandom.ASCIICategory" -->
+        <member name="F:Thrzn41.Util.CryptoRandom.ASCIICategory.None">
+            <summary>
+            None.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CryptoRandom.ASCIICategory.UpperAlphabet">
+            <summary>
+            Upper ASCII Alphabet.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CryptoRandom.ASCIICategory.LowerAlphabet">
+            <summary>
+            Lower ASCII Alphabet.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CryptoRandom.ASCIICategory.Number">
+            <summary>
+            ASCII Numbers.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CryptoRandom.RNGCSP">
+            <summary>
+            Cryptographic random number generator.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CryptoRandom.ASCII_UPPERS">
+            <summary>
+            ASCII upper chars.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CryptoRandom.ASCII_LOWERS">
+            <summary>
+            ASCII lower chars.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CryptoRandom.ASCII_NUMBERS">
+            <summary>
+            ASCII number chars.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.CryptoRandom.NextBytes(System.Int32)">
+            <summary>
+            Returns random byte array.
+            </summary>
+            <param name="byteLength">Length of byte array to be returned. byteLenght must be greater than 0 or equals to 0.</param>
+            <returns>Random byte array.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">byteLenght is less than 0.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.CryptoRandom.FillBytes(System.Byte[])">
+            <summary>
+            Fills byte array with random byte.
+            </summary>
+            <param name="bytes">Byte array to be filled.</param>
+        </member>
+        <member name="M:Thrzn41.Util.CryptoRandom.NextInt(System.Int32)">
+            <summary>
+            Returns a non-negative int that is less than maxValue. 
+            </summary>
+            <param name="maxValue">MaxValue to be returned.</param>
+            <returns>Non-negative int that is less than maxValue.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.CryptoRandom.GetASCIIChars(System.Int32,Thrzn41.Util.CryptoRandom.ASCIICategory)">
+            <summary>
+            Returns random ASCII char array.
+            </summary>
+            <param name="charLength">Length of byte array to be returned. byteLenght must be greater than 0 or equals to 0.</param>
+            <param name="category"><see cref="T:Thrzn41.Util.CryptoRandom.ASCIICategory"/> that is returned in char array.</param>
+            <returns>Random ASCII char array.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.CryptoRandom.isFairInt(System.Int32,System.Int32)">
+            <summary>
+            Checks if the value is fair or not.
+            </summary>
+            <param name="value">Value to be checked.</param>
+            <param name="maxValue">MaxValue to be checked.</param>
+            <returns>true if fair, false if not fair.</returns>
+        </member>
+        <member name="T:Thrzn41.Util.HttpUtils">
+            <summary>
+            Utils for Web.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.HttpUtils.BuildQueryParameters(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Builds Query paramerters from <see cref="T:System.Collections.Specialized.NameValueCollection"/>.
+            </summary>
+            <param name="queryParameters"><see cref="T:System.Collections.Specialized.NameValueCollection"/> that contains key/value pair of query parameters.</param>
+            <returns>string of query parameters.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.HttpUtils.BuildUri(System.Uri,System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Builds https or http uri from <see cref="T:System.Uri"/> and <see cref="T:System.Collections.Specialized.NameValueCollection"/>.
+            This method does not care of fragment part of uri.
+            </summary>
+            <param name="baseUri">Base <see cref="T:System.Uri"/> of https or http.</param>
+            <param name="queryParameters"><see cref="T:System.Collections.Specialized.NameValueCollection"/> that contains key/value pair of query parameters.</param>
+            <returns>Uri with query parameters.</returns>
+            <exception cref="T:System.ArgumentException">Uri scheme is not https or http.</exception>
+        </member>
+        <member name="T:Thrzn41.Util.LocalProtectedString">
+            <summary>
+            Provides features for encrypting and decrypting String in local environment.
+            This class can be used to save/load encrypted string to/from config file or database, etc.
+            An encrypted string by this class does not have portability and can be decrypted by local user or local machine based on <see cref="T:System.Security.Cryptography.DataProtectionScope"/>.
+            Please note that this class does not provide in-memory protection.
+            </summary>
+            <remarks>
+            This class does not provide in-memory protection and can be used to save/load encrypted string to/from config file or database, etc.
+            </remarks>
+        </member>
+        <member name="F:Thrzn41.Util.LocalProtectedString.ENCODING">
+            <summary>
+            Internal encoding of this class.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.LocalProtectedString.ProtectionScope">
+            <summary>
+            <see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.LocalProtectedString.EncryptedData">
+            <summary>
+            Gets encrypted data.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.LocalProtectedString.Entropy">
+            <summary>
+            Gets entropy to encrypt or decrypt data.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.LocalProtectedString.EncryptedDataBase64">
+            <summary>
+            Gets encrypted data in base64 format.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.LocalProtectedString.EntropyBase64">
+            <summary>
+            Gets entropy in base64 format.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.#ctor(System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            pvivate Constuctor.
+            </summary>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encryption and decryption.</param>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromChars(System.Char[],System.Int32,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from char array.
+            </summary>
+            <param name="chars">Char array to be encrypted.</param>
+            <param name="entropyLength">Entropy length to be used on encrypting.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromString(System.String,System.Int32,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from string.
+            </summary>
+            <param name="str">string to be encrypted.</param>
+            <param name="entropyLength">Entropy length to be used on encrypting.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromEncryptedData(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from encrypted data.
+            </summary>
+            <param name="encryptedData">Encrypted data to be decrypted.</param>
+            <param name="entropy">Entropy to be used on decryption.</param>
+            <param name="scope"><see cref="!:StringProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromEncryptedDataBase64(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from base64 encrypted data.
+            </summary>
+            <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
+            <param name="entropyBase64">Base64 entropy to be used on decryption.</param>
+            <param name="scope"><see cref="!:StringProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.DecryptToChars">
+            <summary>
+            Decrypts to char array.
+            </summary>
+            <returns>Decrypted char array.</returns>
+        </member>
+        <member name="T:Thrzn41.Util.PBEProtectedString">
+            <summary>
+            Provides features for encrypting and decrypting String by password based encryption.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.PBEProtectedString.BLOCK_SIZE">
+            <summary>
+            Block size.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.PBEProtectedString.ENCODING">
+            <summary>
+            Internal encoding of this class.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.PBEProtectedString.EncryptedData">
+            <summary>
+            Gets encrypted data.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.PBEProtectedString.Salt">
+            <summary>
+            Gets the salt to encrypt or decrypt data.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.PBEProtectedString.EncryptedDataBase64">
+            <summary>
+            Gets encrypted data in base64 format.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.PBEProtectedString.SaltBase64">
+            <summary>
+            Gets salt in base64 format.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.PBEProtectedString.key">
+            <summary>
+            Key for encryption and decryption.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.PBEProtectedString.iv">
+            <summary>
+            Initialization vector for encryption and decryption.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.PBEProtectedString.keySize">
+            <summary>
+            Key size.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.PBEProtectedString.cipherMode">
+            <summary>
+            <see cref="T:System.Security.Cryptography.CipherMode"/> for encryption and decryption.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.PBEProtectedString.paddingMode">
+            <summary>
+            <see cref="T:System.Security.Cryptography.PaddingMode"/> for encryption and decryption.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.#ctor(System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            private constructor.
+            </summary>
+            <param name="keySize">Key size.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/> for encryption and decryption.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/> for encryption and decryption.</param>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.generateKey(System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Generates key and iv.
+            </summary>
+            <param name="password">Password to generate key and iv.</param>
+            <param name="iterationCount">Iteration count to generate.</param>
+            <param name="blockSize">Block size.</param>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromChars(System.Char[],System.Byte[],System.Int32,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from char array.
+            </summary>
+            <param name="chars">Char array to be encrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltLenght">Salt length to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromString(System.String,System.Byte[],System.Int32,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from string.
+            </summary>
+            <param name="str">string to be encrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltLenght">Salt length to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromEncryptedData(System.Byte[],System.Byte[],System.Byte[],System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from encrypted data.
+            </summary>
+            <param name="encryptedData">Encrypted data to be decrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="salt">Salt to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromEncryptedDataBase64(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from base64 encrypted data.
+            </summary>
+            <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltBase64">Base64 Salt to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.DecryptToChars">
+            <summary>
+            Decrypts to char array.
+            </summary>
+            <returns>Decrypted char array.</returns>
+        </member>
+        <member name="F:Thrzn41.Util.ProtectedString.RAND">
+            <summary>
+            Crypto random generator.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.ProtectedString.DecryptToChars">
+            <summary>
+            Decrypts to char array.
+            </summary>
+            <returns>Decrypted char array.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.ProtectedString.DecryptToSecureString">
+            <summary>
+            Decrypts to <see cref="T:System.Security.SecureString"/>.
+            </summary>
+            <returns>Decrypted <see cref="T:System.Security.SecureString"/>.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.ProtectedString.DecryptToString">
+            <summary>
+            Decrypts to string.
+            </summary>
+            <returns>Decrypted string.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.ProtectedString.ClearArray``1(``0[])">
+            <summary>
+            Clears array.
+            </summary>
+            <typeparam name="T">Type in array to be cleared.</typeparam>
+            <param name="data">Data to be cleared.</param>
+            <returns>Value that is set in cleared array.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.ProtectedString.ClearChars(System.Char[])">
+            <summary>
+            Clears char array.
+            Clearing char array which contains sensitive data in memory is better for security.
+            However, for long-lifetime char array may be copied by managed memory manager.
+            </summary>
+            <param name="chars">Char array to be cleared.</param>
+            <returns>Always returns true.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.ProtectedString.ClearBytes(System.Byte[])">
+            <summary>
+            Clears byte array.
+            Clearing byte array which contains sensitive data in memory is better for security.
+            However, for long-lifetime byte array may be copied by managed memory manager.
+            </summary>
+            <param name="chars">Byte array to be cleared.</param>
+            <returns>Always returns true.</returns>
+        </member>
+        <member name="T:Thrzn41.Util.ResourceMessage.ErrorMessages">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.ByteLengthLessThanZero">
+            <summary>
+              Looks up a localized string similar to byteLength is less than 0..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.CharLengthLessThanZero">
+            <summary>
+              Looks up a localized string similar to charLength is less than 0..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.MaxValueLessThanZero">
+            <summary>
+              Looks up a localized string similar to maxValue is less than 0..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.UriSchemeIsNotHttpsOrHttp">
+            <summary>
+              Looks up a localized string similar to Uri scheme is not https or http..
+            </summary>
+        </member>
+        <member name="T:Thrzn41.Util.SlimLock">
+            <summary>
+            Slim lock that is allowing multiple threads for reading or exclusive writing.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.SlimLock.rwLock">
+            <summary>
+            ReaderWriter lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.#ctor">
+            <summary>
+            Creates Slim lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.#ctor(System.Threading.LockRecursionPolicy)">
+            <summary>
+            Creates Slim lock with policy.
+            </summary>
+            <param name="policy"><see cref="T:System.Threading.LockRecursionPolicy"/> that specifies whether a lock can be entered multiple times by the same thread.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.ExecuteInReaderLock``1(System.Func{``0})">
+            <summary>
+            Executes in reader lock.
+            </summary>
+            <typeparam name="TResult">Type of result.</typeparam>
+            <param name="func">Function that returns value.This function is executed in reader lock.</param>
+            <returns>Result value of the func function parameter.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.ExecuteInWriterLock``1(System.Func{``0})">
+            <summary>
+            Executes in reader lock.
+            </summary>
+            <typeparam name="TResult">Type of result.</typeparam>
+            <param name="func">Function that returns value.This function is executed in reader lock.</param>
+            <returns>Result value of the func function parameter.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.ExecuteInReaderLock(System.Action)">
+            <summary>
+            Executes in reader lock.
+            </summary>
+            <param name="func">Function that returns value.This function is executed in reader lock.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.ExecuteInWriterLock(System.Action)">
+            <summary>
+            Executes in reader lock.
+            </summary>
+            <typeparam name="TResult">Type of result.</typeparam>
+            <param name="func">Function that returns value.This function is executed in reader lock.</param>
+        </member>
+        <member name="T:Thrzn41.Util.UTF8Utils">
+            <summary>
+            Utils for UTF-8 Encoding.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.UTF8Utils.UTF8_WITH_BOM">
+            <summary>
+            Represents UTF-8 Encoding with Byte order mark.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.UTF8Utils.UTF8_WITHOUT_BOM">
+            <summary>
+            Represents UTF-8 Encoding without Byte order mark.
+            </summary>
+        </member>
+    </members>
+</doc>
