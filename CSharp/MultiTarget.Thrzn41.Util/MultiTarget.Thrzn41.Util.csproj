@@ -7,15 +7,16 @@
     <Copyright>Copyright (c) 2017 thrzn41</Copyright>
     <Authors>thrzn41</Authors>
     <Company>thrzn41</Company>
-    <Version>1.0.1-alpha</Version>
+    <Version>1.0.2-alpha</Version>
     <PackageProjectUrl>https://github.com/thrzn41/Utils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/thrzn41/Utils</RepositoryUrl>
     <PackageTags>Utils</PackageTags>
     <PackageLicenseUrl>https://github.com/thrzn41/Utils/blob/master/LICENSE</PackageLicenseUrl>
     <Description>Utils to be used in my projects.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.0</FileVersion>
+    <AssemblyVersion>1.0.2.0</AssemblyVersion>
+    <FileVersion>1.0.2.0</FileVersion>
+    <DocumentationFile>Thrzn41.Util.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
