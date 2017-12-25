@@ -11,20 +11,50 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
     {
 
         [TestMethod]
-        public void TestProtectedString()
+        public void TestLocalProtectedString()
         {
-            var ps1 = ProtectedString.FromString("Hello");
-            var ps2 = ProtectedString.FromString("Hello");
+            using (var ps1 = LocalProtectedString.FromString("Hello"))
+            {
+                var ps2 = LocalProtectedString.FromString("Hello");
 
-            Assert.AreEqual(128, ps1.Entropy.Length);
-            Assert.AreEqual(128, ps2.Entropy.Length);
+                Assert.AreEqual(128, ps1.Entropy.Length);
+                Assert.AreEqual(128, ps2.Entropy.Length);
 
-            Assert.AreEqual(false, ps1.EncryptedData.SequenceEqual(ps2.EncryptedData));
+                Assert.AreEqual(false, ps1.EncryptedData.SequenceEqual(ps2.EncryptedData));
 
-            Assert.AreEqual("Hello", ps1.DecryptToString());
-            Assert.AreEqual("Hello", ps2.DecryptToString());
+                Assert.AreEqual("Hello", ps1.DecryptToString());
+                Assert.AreEqual("Hello", ps2.DecryptToString());
 
+
+                var ps3 = LocalProtectedString.FromEncryptedData(ps1.EncryptedData, ps1.Entropy);
+
+                Assert.AreEqual("Hello", ps3.DecryptToString());
+            }
         }
+
+        [TestMethod]
+        public void TestPBEProtectedString()
+        {
+
+            CryptoRandom rand = new CryptoRandom();
+
+            var password = UTF8Utils.UTF8_WITHOUT_BOM.GetBytes(rand.GetASCIIChars(64));
+
+            using (var ps1 = PBEProtectedString.FromString("Hello", password))
+            {
+                var ps2 = PBEProtectedString.FromString("Hello", password);
+
+                Assert.AreEqual(false, ps1.EncryptedData.SequenceEqual(ps2.EncryptedData));
+
+                Assert.AreEqual("Hello", ps1.DecryptToString());
+                Assert.AreEqual("Hello", ps2.DecryptToString());
+
+                var ps3 = PBEProtectedString.FromEncryptedData(ps1.EncryptedData, password, ps1.Salt);
+
+                Assert.AreEqual("Hello", ps3.DecryptToString());
+            }
+        }
+
 
 
         [TestMethod]
@@ -32,7 +62,9 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
         {
             char[] chars = { 'a', 'b', 'c', 'd' };
 
-            ProtectedString.ClearChars(chars);
+            bool result = ProtectedString.ClearChars(chars);
+
+            Assert.AreEqual(true, result);
 
             foreach (var item in chars)
             {
