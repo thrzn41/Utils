@@ -9,7 +9,12 @@
             Provides features for generating cryptographic ramdom number.
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Thrzn41.Util.CryptoRandom.ASCIICategory" -->
+        <member name="T:Thrzn41.Util.CryptoRandom.ASCIICategory">
+            <summary>
+            ASCII category to be used <see cref="M:Thrzn41.Util.CryptoRandom.GetASCIIChars(System.Int32,Thrzn41.Util.CryptoRandom.ASCIICategory)"/>.
+            For now, symbols are not supported.
+            </summary>
+        </member>
         <member name="F:Thrzn41.Util.CryptoRandom.ASCIICategory.None">
             <summary>
             None.
@@ -180,7 +185,7 @@
             </summary>
             <param name="encryptedData">Encrypted data to be decrypted.</param>
             <param name="entropy">Entropy to be used on decryption.</param>
-            <param name="scope"><see cref="!:StringProtectionScope"/> for encrypted data.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
             <returns>ProtectedString instance.</returns>
         </member>
         <member name="M:Thrzn41.Util.LocalProtectedString.FromEncryptedDataBase64(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
@@ -189,7 +194,7 @@
             </summary>
             <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
             <param name="entropyBase64">Base64 entropy to be used on decryption.</param>
-            <param name="scope"><see cref="!:StringProtectionScope"/> for encrypted data.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
             <returns>ProtectedString instance.</returns>
         </member>
         <member name="M:Thrzn41.Util.LocalProtectedString.DecryptToChars">
@@ -197,6 +202,17 @@
             Decrypts to char array.
             </summary>
             <returns>Decrypted char array.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.Dispose(System.Boolean)">
+            <summary>
+            DIspose.
+            </summary>
+            <param name="disposing">disposing.</param>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.Dispose">
+            <summary>
+            Dispose.
+            </summary>
         </member>
         <member name="T:Thrzn41.Util.PBEProtectedString">
             <summary>
@@ -287,7 +303,59 @@
             <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
             <returns>PBEProtectedString instance.</returns>
         </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromChars(System.Char[],System.Char[],System.Int32,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from char array.
+            </summary>
+            <param name="chars">Char array to be encrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltLenght">Salt length to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromChars(System.Char[],System.String,System.Int32,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from char array.
+            </summary>
+            <param name="chars">Char array to be encrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltLenght">Salt length to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
         <member name="M:Thrzn41.Util.PBEProtectedString.FromString(System.String,System.Byte[],System.Int32,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from string.
+            </summary>
+            <param name="str">string to be encrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltLenght">Salt length to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromString(System.String,System.Char[],System.Int32,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from string.
+            </summary>
+            <param name="str">string to be encrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltLenght">Salt length to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromString(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
             <summary>
             Creates instance from string.
             </summary>
@@ -313,7 +381,59 @@
             <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
             <returns>PBEProtectedString instance.</returns>
         </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromEncryptedData(System.Byte[],System.Char[],System.Byte[],System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from encrypted data.
+            </summary>
+            <param name="encryptedData">Encrypted data to be decrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="salt">Salt to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromEncryptedData(System.Byte[],System.String,System.Byte[],System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from encrypted data.
+            </summary>
+            <param name="encryptedData">Encrypted data to be decrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="salt">Salt to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
         <member name="M:Thrzn41.Util.PBEProtectedString.FromEncryptedDataBase64(System.String,System.Byte[],System.String,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from base64 encrypted data.
+            </summary>
+            <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltBase64">Base64 Salt to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromEncryptedDataBase64(System.String,System.Char[],System.String,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
+            <summary>
+            Creates instance from base64 encrypted data.
+            </summary>
+            <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
+            <param name="password">Password to generate key to encrypt and decrypt.</param>
+            <param name="saltBase64">Base64 Salt to generate key.</param>
+            <param name="iterationCount">Iteration count to generate key.</param>
+            <param name="keySize">Key size in bit.</param>
+            <param name="cipherMode"><see cref="T:System.Security.Cryptography.CipherMode"/>.</param>
+            <param name="paddingMode"><see cref="T:System.Security.Cryptography.PaddingMode"/>.</param>
+            <returns>PBEProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.FromEncryptedDataBase64(System.String,System.String,System.String,System.Int32,System.Int32,System.Security.Cryptography.CipherMode,System.Security.Cryptography.PaddingMode)">
             <summary>
             Creates instance from base64 encrypted data.
             </summary>
@@ -331,6 +451,22 @@
             Decrypts to char array.
             </summary>
             <returns>Decrypted char array.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">disposing.</param>
+        </member>
+        <member name="M:Thrzn41.Util.PBEProtectedString.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
+        <member name="T:Thrzn41.Util.ProtectedString">
+            <summary>
+            Provides features for encrypting and decrypting String.
+            </summary>
         </member>
         <member name="F:Thrzn41.Util.ProtectedString.RAND">
             <summary>
@@ -378,7 +514,7 @@
             Clearing byte array which contains sensitive data in memory is better for security.
             However, for long-lifetime byte array may be copied by managed memory manager.
             </summary>
-            <param name="chars">Byte array to be cleared.</param>
+            <param name="bytes">Byte array to be cleared.</param>
             <returns>Always returns true.</returns>
         </member>
         <member name="T:Thrzn41.Util.ResourceMessage.ErrorMessages">
@@ -464,8 +600,18 @@
             <summary>
             Executes in reader lock.
             </summary>
-            <typeparam name="TResult">Type of result.</typeparam>
             <param name="func">Function that returns value.This function is executed in reader lock.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">disposing.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.Dispose">
+            <summary>
+            Dispose.
+            </summary>
         </member>
         <member name="T:Thrzn41.Util.UTF8Utils">
             <summary>

@@ -122,7 +122,6 @@ namespace Thrzn41.Util
         /// <summary>
         /// Executes in reader lock.
         /// </summary>
-        /// <typeparam name="TResult">Type of result.</typeparam>
         /// <param name="func">Function that returns value.This function is executed in reader lock.</param>
         public void ExecuteInWriterLock(Action func)
         {
@@ -142,7 +141,11 @@ namespace Thrzn41.Util
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
-
+        
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        /// <param name="disposing">disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -169,6 +172,9 @@ namespace Thrzn41.Util
         // }
 
         // This code added to correctly implement the disposable pattern.
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

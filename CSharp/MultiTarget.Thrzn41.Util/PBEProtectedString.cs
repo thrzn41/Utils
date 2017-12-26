@@ -169,6 +169,39 @@ namespace Thrzn41.Util
         }
 
         /// <summary>
+        /// Creates instance from char array.
+        /// </summary>
+        /// <param name="chars">Char array to be encrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="saltLenght">Salt length to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromChars(char[] chars, char[] password, int saltLenght = 128, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromChars(chars, ENCODING.GetBytes(password), saltLenght, iterationCount, keySize, cipherMode, paddingMode);
+        }
+
+        /// <summary>
+        /// Creates instance from char array.
+        /// </summary>
+        /// <param name="chars">Char array to be encrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="saltLenght">Salt length to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromChars(char[] chars, string password, int saltLenght = 128, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromChars(chars, ENCODING.GetBytes(password), saltLenght, iterationCount, keySize, cipherMode, paddingMode);
+        }
+
+
+        /// <summary>
         /// Creates instance from string.
         /// </summary>
         /// <param name="str">string to be encrypted.</param>
@@ -192,6 +225,38 @@ namespace Thrzn41.Util
             }
 
             return ps;
+        }
+
+        /// <summary>
+        /// Creates instance from string.
+        /// </summary>
+        /// <param name="str">string to be encrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="saltLenght">Salt length to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromString(string str, char[] password, int saltLenght = 128, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromString(str, ENCODING.GetBytes(password), saltLenght, iterationCount, keySize, cipherMode, paddingMode);
+        }
+
+        /// <summary>
+        /// Creates instance from string.
+        /// </summary>
+        /// <param name="str">string to be encrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="saltLenght">Salt length to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromString(string str, string password, int saltLenght = 128, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromString(str, ENCODING.GetBytes(password), saltLenght, iterationCount, keySize, cipherMode, paddingMode);
         }
 
 
@@ -219,6 +284,39 @@ namespace Thrzn41.Util
         }
 
         /// <summary>
+        /// Creates instance from encrypted data.
+        /// </summary>
+        /// <param name="encryptedData">Encrypted data to be decrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="salt">Salt to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromEncryptedData(byte[] encryptedData, char[] password, byte[] salt, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromEncryptedData(encryptedData, ENCODING.GetBytes(password), salt, iterationCount, keySize, cipherMode, paddingMode);
+        }
+
+        /// <summary>
+        /// Creates instance from encrypted data.
+        /// </summary>
+        /// <param name="encryptedData">Encrypted data to be decrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="salt">Salt to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromEncryptedData(byte[] encryptedData, string password, byte[] salt, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromEncryptedData(encryptedData, ENCODING.GetBytes(password), salt, iterationCount, keySize, cipherMode, paddingMode);
+        }
+
+
+        /// <summary>
         /// Creates instance from base64 encrypted data.
         /// </summary>
         /// <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
@@ -240,7 +338,37 @@ namespace Thrzn41.Util
                 paddingMode);
         }
 
+        /// <summary>
+        /// Creates instance from base64 encrypted data.
+        /// </summary>
+        /// <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="saltBase64">Base64 Salt to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromEncryptedDataBase64(string encryptedDataBase64, char[] password, string saltBase64, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromEncryptedDataBase64(encryptedDataBase64, ENCODING.GetBytes(password), saltBase64, iterationCount, keySize, cipherMode, paddingMode);
+        }
 
+        /// <summary>
+        /// Creates instance from base64 encrypted data.
+        /// </summary>
+        /// <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
+        /// <param name="password">Password to generate key to encrypt and decrypt.</param>
+        /// <param name="saltBase64">Base64 Salt to generate key.</param>
+        /// <param name="iterationCount">Iteration count to generate key.</param>
+        /// <param name="keySize">Key size in bit.</param>
+        /// <param name="cipherMode"><see cref="CipherMode"/>.</param>
+        /// <param name="paddingMode"><see cref="PaddingMode"/>.</param>
+        /// <returns>PBEProtectedString instance.</returns>
+        public static PBEProtectedString FromEncryptedDataBase64(string encryptedDataBase64, string password, string saltBase64, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            return FromEncryptedDataBase64(encryptedDataBase64, ENCODING.GetBytes(password), saltBase64, iterationCount, keySize, cipherMode, paddingMode);
+        }
 
 
         /// <summary>
@@ -282,6 +410,11 @@ namespace Thrzn41.Util
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        /// <param name="disposing">disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -308,6 +441,9 @@ namespace Thrzn41.Util
         // }
 
         // This code added to correctly implement the disposable pattern.
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.

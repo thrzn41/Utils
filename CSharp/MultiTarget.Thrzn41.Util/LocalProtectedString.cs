@@ -157,7 +157,7 @@ namespace Thrzn41.Util
         /// </summary>
         /// <param name="encryptedData">Encrypted data to be decrypted.</param>
         /// <param name="entropy">Entropy to be used on decryption.</param>
-        /// <param name="scope"><see cref="StringProtectionScope"/> for encrypted data.</param>
+        /// <param name="scope"><see cref="DataProtectionScope"/> for encrypted data.</param>
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromEncryptedData(byte[] encryptedData, byte[] entropy, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
@@ -174,7 +174,7 @@ namespace Thrzn41.Util
         /// </summary>
         /// <param name="encryptedDataBase64">Base64 encrypted data to be decrypted.</param>
         /// <param name="entropyBase64">Base64 entropy to be used on decryption.</param>
-        /// <param name="scope"><see cref="StringProtectionScope"/> for encrypted data.</param>
+        /// <param name="scope"><see cref="DataProtectionScope"/> for encrypted data.</param>
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromEncryptedDataBase64(string encryptedDataBase64, string entropyBase64, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
@@ -204,6 +204,11 @@ namespace Thrzn41.Util
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
+
+        /// <summary>
+        /// DIspose.
+        /// </summary>
+        /// <param name="disposing">disposing.</param>
         protected virtual void Dispose(bool disposing)
         {
             if (!disposedValue)
@@ -228,6 +233,9 @@ namespace Thrzn41.Util
         // }
 
         // This code added to correctly implement the disposable pattern.
+        /// <summary>
+        /// Dispose.
+        /// </summary>
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
