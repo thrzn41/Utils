@@ -38,7 +38,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
             CryptoRandom rand = new CryptoRandom();
 
-            var password = UTF8Utils.UTF8_WITHOUT_BOM.GetBytes(rand.GetASCIIChars(64));
+            var password = rand.GetASCIIChars(64);
 
             using (var ps1 = PBEProtectedString.FromString("Hello", password))
             {

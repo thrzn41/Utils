@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Thrzn41.Util
 {
+
+    /// <summary>
+    /// Provides features for encrypting and decrypting String.
+    /// </summary>
     public abstract class ProtectedString
     {
 
@@ -114,7 +118,7 @@ namespace Thrzn41.Util
         /// Clearing byte array which contains sensitive data in memory is better for security.
         /// However, for long-lifetime byte array may be copied by managed memory manager.
         /// </summary>
-        /// <param name="chars">Byte array to be cleared.</param>
+        /// <param name="bytes">Byte array to be cleared.</param>
         /// <returns>Always returns true.</returns>
         public static bool ClearBytes(byte[] bytes)
         {

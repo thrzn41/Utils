@@ -36,7 +36,7 @@ namespace Thrzn41.Util
     {
 
         /// <summary>
-        /// ASCII category to be used <see cref="GetASCIIChars(int, ASCIICategory)"./>
+        /// ASCII category to be used <see cref="GetASCIIChars(int, ASCIICategory)"/>.
         /// For now, symbols are not supported.
         /// </summary>
         [Flags]
