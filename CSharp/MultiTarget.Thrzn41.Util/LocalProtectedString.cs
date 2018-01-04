@@ -72,7 +72,11 @@ namespace Thrzn41.Util
         {
             get
             {
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+                return Convert.ToBase64String(this.EncryptedData);
+#else
                 return Convert.ToBase64String(this.EncryptedData, Base64FormattingOptions.None);
+#endif
             }
         }
 
@@ -88,7 +92,11 @@ namespace Thrzn41.Util
                     return null;
                 }
 
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+                return Convert.ToBase64String(this.Entropy);
+#else
                 return Convert.ToBase64String(this.Entropy, Base64FormattingOptions.None);
+#endif
             }
         }
 
@@ -201,7 +209,7 @@ namespace Thrzn41.Util
             return ENCODING.GetChars(ProtectedData.Unprotect(this.EncryptedData, this.Entropy, this.ProtectionScope));
         }
 
-        #region IDisposable Support
+#region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
 
@@ -243,7 +251,7 @@ namespace Thrzn41.Util
             // TODO: uncomment the following line if the finalizer is overridden above.
             // GC.SuppressFinalize(this);
         }
-        #endregion
+#endregion
 
     }
 
