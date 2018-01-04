@@ -82,7 +82,11 @@ namespace Thrzn41.Util
         /// <exception cref="ArgumentException">Uri scheme is not https or http.</exception>
         public static Uri BuildUri(Uri baseUri, NameValueCollection queryParameters)
         {
-            if( (baseUri.Scheme != Uri.UriSchemeHttps) && (baseUri.Scheme != Uri.UriSchemeHttp) )
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+            if ( (baseUri.Scheme != "https") && (baseUri.Scheme != "http") )
+#else
+            if ( (baseUri.Scheme != Uri.UriSchemeHttps) && (baseUri.Scheme != Uri.UriSchemeHttp) )
+#endif
             {
                 throw new ArgumentException(ResourceMessage.ErrorMessages.UriSchemeIsNotHttpsOrHttp, "baseUri");
             }
@@ -102,7 +106,11 @@ namespace Thrzn41.Util
                         separator = "&";
                     }
 
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+                    result = new Uri(String.Format("{0}{1}{2}", baseUri.AbsoluteUri, separator, queryParamsString));
+#else
                     result = new Uri(String.Format("{0}{1}{2}", baseUri.GetLeftPart(UriPartial.Query), separator, queryParamsString));
+#endif
                 }
             }
 

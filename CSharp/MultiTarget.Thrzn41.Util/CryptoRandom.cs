@@ -65,12 +65,17 @@ namespace Thrzn41.Util
 
 
 
-
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+        /// <summary>
+        /// Cryptographic random number generator.
+        /// </summary>
+        private static readonly RandomNumberGenerator RNGCSP = RandomNumberGenerator.Create();
+#else
         /// <summary>
         /// Cryptographic random number generator.
         /// </summary>
         private static readonly RNGCryptoServiceProvider RNGCSP = new RNGCryptoServiceProvider();
-
+#endif
 
         /// <summary>
         /// ASCII upper chars.
