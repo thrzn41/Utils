@@ -61,7 +61,7 @@ namespace Thrzn41.Util
 
             var str = new String(chars);
 
-            if (!ClearChars(chars))
+            if ( !ClearChars(chars) )
             {
                 return str;
             }
@@ -79,7 +79,7 @@ namespace Thrzn41.Util
         /// <param name="data">Data to be cleared.</param>
         /// <returns>Value that is set in cleared array.</returns>
         public static T ClearArray<T>(T[] data)
-            where T : IComparable<T>
+            where T : struct
         {
             if (data == null || data.Length == 0)
             {
