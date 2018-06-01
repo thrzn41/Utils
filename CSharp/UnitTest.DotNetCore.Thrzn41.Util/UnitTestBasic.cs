@@ -56,6 +56,55 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
         }
 
 
+        [TestMethod]
+        public void TestHashString()
+        {
+            var hs = HashString.CreateHMACSHA512("secret");
+            Assert.AreEqual("59360d6007ae053929b85baca35bab804f60c08aaaaa77e99c95141b1311d1332fa1ebdd0778c72e34a9f48b0ae4f2c192473a751d69cf9d6862fa597aa24b12", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("43ce2a3ad6c6f2694f7bb94ddb3f0236ab70e9fd667bece66c19a92bc4266125b51bf1ac9901292346746317c3265a729898ab5028eab645c84a047f97afbb5f", hs.ComputeString(new byte[] { 1, 2, 1 }));
+
+            hs = HashString.CreateHMACSHA512("Secret");
+            Assert.AreEqual("82bd85b7f29d521d656b5077e6fdc898a5364e33f4b20002f9408484d29479d594173683ed967fd0f313062897e1477f513ac8cca42866c0f9d29375cb0b4673", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("cd441810f657735fe4f05cbc36aec1fc69e0a21bdb51662d1c64d68b11dde8b14b02d64922946ffc182e03e3607da516d923105ac0af2ee598ed6b05bd3151df", hs.ComputeString(new byte[] { 4, 5, 6 }));
+
+
+            hs = HashString.CreateHMACSHA256("secret");
+            Assert.AreEqual("fd8a5cf25311f4dd6ba2b77431ccceccfbdc2df49ff62062078350c44745bbab", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("8455b14265d2b4f7f41ff9d91cd6a7239d6f97d2614e749bd8022cb88cfe4796", hs.ComputeString(new byte[] { 1, 2, 1 }));
+
+            hs = HashString.CreateHMACSHA256("Secret");
+            Assert.AreEqual("ff48bdc367a1ceb15610df3d44585ba541795977a1e75d3407dbfbd88331e5d1", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("504f8826a24ed4c69a55870bb6dfe06b0cbfb50524a5ad9e1d45481a1dee3da0", hs.ComputeString(new byte[] { 4, 5, 6 }));
+
+
+
+            hs = HashString.CreateHMACSHA1("secret");
+            Assert.AreEqual("217ca184982b77046a7df11f170463af98545efe", hs.ComputeString(new byte[] { 1, 2, 3}));
+            Assert.AreEqual("a3ce38b87cfc1d83d8d1ce2f934354eaf8709406", hs.ComputeString(new byte[] { 1, 2, 1}));
+
+            hs = HashString.CreateHMACSHA1("Secret");
+            Assert.AreEqual("818fb6b8832a67931ab93373a5e3903dba91fd38", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("820e58bd3d346fd9e248981e5e2a8d7ed0568cde", hs.ComputeString(new byte[] { 4, 5, 6 }));
+
+
+            hs = HashString.CreateSHA512();
+            Assert.AreEqual("27864cc5219a951a7a6e52b8c8dddf6981d098da1658d96258c870b2c88dfbcb51841aea172a28bafa6a79731165584677066045c959ed0f9929688d04defc29", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("525454b3b83d2c9ca82be9418ef8933ea00c954f57e391b1ec703a3f84afcd5d942d1de871c0e97f5b00646f6a3176bbcf71f75fab16488263ed3c43c776871b", hs.ComputeString(new byte[] { 1, 2, 1 }));
+
+
+            hs = HashString.CreateSHA256();
+            Assert.AreEqual("039058c6f2c0cb492c533b0a4d14ef77cc0f78abccced5287d84a1a2011cfb81", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("4912326e465b6efb1d5b1b276e321709d99a506e230a31f3c158c976d4a8a4e8", hs.ComputeString(new byte[] { 1, 2, 1 }));
+
+
+            hs = HashString.CreateSHA1();
+            Assert.AreEqual("7037807198c22a7d2b0807371d763779a84fdfcf", hs.ComputeString(new byte[] { 1, 2, 3 }));
+            Assert.AreEqual("0a433b4f5965e3453f48da868296ce002e7eba61", hs.ComputeString(new byte[] { 1, 2, 1 }));
+
+        }
+
+
+
 
         [TestMethod]
         public void TestClearChars()

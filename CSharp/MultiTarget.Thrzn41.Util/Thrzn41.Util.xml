@@ -92,6 +92,119 @@
             <param name="maxValue">MaxValue to be checked.</param>
             <returns>true if fair, false if not fair.</returns>
         </member>
+        <member name="T:Thrzn41.Util.HashString">
+            <summary>
+            Provides feature for Hash string.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.HashString.ENCODING">
+            <summary>
+            Internal encoding.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.HashString.hashAlgorithm">
+            <summary>
+            Hash algorithm to be used.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.#ctor(System.Security.Cryptography.HashAlgorithm)">
+            <summary>
+            Constuctor of <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <param name="hashAlgorithm"><see cref="T:System.Security.Cryptography.HashAlgorithm"/> of <see cref="T:Thrzn41.Util.HashString"/></param>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.convertToString(System.Byte[])">
+            <summary>
+            Converts hash bytes to string.
+            </summary>
+            <param name="hash">Hash bytes.</param>
+            <returns>Converted string.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.ComputeString(System.Byte[])">
+            <summary>
+            Computes hash string.
+            </summary>
+            <param name="data">Data to be computed.</param>
+            <returns>Computed hash string.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.ComputeString(System.IO.Stream)">
+            <summary>
+            Computes hash string.
+            </summary>
+            <param name="stream"><see cref="T:System.IO.Stream"/> to be computed.</param>
+            <returns>Computed hash string.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateHMACSHA512(System.Byte[])">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.HMACSHA512"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <param name="secret">Secret bytes.</param>
+            <returns><see cref="T:System.Security.Cryptography.HMACSHA512"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateHMACSHA512(System.String)">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.HMACSHA512"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <param name="secret">Secret string.</param>
+            <returns><see cref="T:System.Security.Cryptography.HMACSHA512"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateHMACSHA256(System.Byte[])">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.HMACSHA256"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <param name="secret">Secret bytes.</param>
+            <returns><see cref="T:System.Security.Cryptography.HMACSHA256"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateHMACSHA256(System.String)">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.HMACSHA256"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <param name="secret">Secret string.</param>
+            <returns><see cref="T:System.Security.Cryptography.HMACSHA256"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateHMACSHA1(System.Byte[])">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.HMACSHA1"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <param name="secret">Secret bytes.</param>
+            <returns><see cref="T:System.Security.Cryptography.HMACSHA1"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateHMACSHA1(System.String)">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.HMACSHA1"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <param name="secret">Secret string.</param>
+            <returns><see cref="T:System.Security.Cryptography.HMACSHA1"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateSHA512">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.SHA512"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <returns><see cref="T:System.Security.Cryptography.SHA512"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateSHA256">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.SHA256"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <returns><see cref="T:System.Security.Cryptography.SHA256"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.CreateSHA1">
+            <summary>
+            Create <see cref="T:System.Security.Cryptography.SHA1"/> based <see cref="T:Thrzn41.Util.HashString"/>.
+            </summary>
+            <returns><see cref="T:System.Security.Cryptography.SHA1"/> based <see cref="T:Thrzn41.Util.HashString"/></returns>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">disposing.</param>
+        </member>
+        <member name="M:Thrzn41.Util.HashString.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
         <member name="T:Thrzn41.Util.HttpUtils">
             <summary>
             Utils for Web.
