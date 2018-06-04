@@ -164,15 +164,17 @@ namespace Thrzn41.Util
 
 
 
-#if !(DOTNETSTANDARD1_3 || DOTNETCORE1_0)
-
         /// <summary>
         /// Create <see cref="SHA512"/> based <see cref="HashString"/>.
         /// </summary>
         /// <returns><see cref="SHA512"/> based <see cref="HashString"/></returns>
         public static HashString CreateSHA512()
         {
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+            return ( new HashString(SHA512.Create()) );
+#else
             return ( new HashString(new SHA512CryptoServiceProvider()) );
+#endif
         }
 
 
@@ -182,7 +184,11 @@ namespace Thrzn41.Util
         /// <returns><see cref="SHA256"/> based <see cref="HashString"/></returns>
         public static HashString CreateSHA256()
         {
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+            return ( new HashString(SHA256.Create()) );
+#else
             return ( new HashString(new SHA256CryptoServiceProvider()) );
+#endif
         }
 
 
@@ -192,15 +198,16 @@ namespace Thrzn41.Util
         /// <returns><see cref="SHA1"/> based <see cref="HashString"/></returns>
         public static HashString CreateSHA1()
         {
+#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
+            return ( new HashString(SHA1.Create()) );
+#else
             return (new HashString(new SHA1CryptoServiceProvider()));
-        }
-
-
 #endif
-
-
-
-
+        }
+        
+        
+        
+        
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
