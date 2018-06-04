@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp1.0;netcoreapp2.0;net452;net461</TargetFrameworks>
@@ -7,15 +7,15 @@
     <Copyright>Copyright (c) 2018 thrzn41</Copyright>
     <Authors>thrzn41</Authors>
     <Company>thrzn41</Company>
-    <Version>1.1.1</Version>
+    <Version>1.1.2</Version>
     <PackageProjectUrl>https://github.com/thrzn41/Utils</PackageProjectUrl>
     <RepositoryUrl>https://github.com/thrzn41/Utils</RepositoryUrl>
     <PackageTags>Utils</PackageTags>
     <PackageLicenseUrl>https://github.com/thrzn41/Utils/blob/master/LICENSE</PackageLicenseUrl>
     <Description>Utils that are used in thrzn41 projects.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.1.1.0</AssemblyVersion>
-    <FileVersion>1.1.1.0</FileVersion>
+    <AssemblyVersion>1.1.2.0</AssemblyVersion>
+    <FileVersion>1.1.2.0</FileVersion>
     <DocumentationFile>Thrzn41.Util.xml</DocumentationFile>
   </PropertyGroup>
 
@@ -49,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'netcoreapp1.0' OR '$(TargetFramework)' == 'netcoreapp2.0' ">
-      <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.4.0" />
+      <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.5.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net452' OR '$(TargetFramework)' == 'net461' ">
