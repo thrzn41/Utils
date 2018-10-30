@@ -30,6 +30,30 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Assert.AreEqual("Hello", ps3.DecryptToString());
             }
+
+            using (var ps1 = LocalProtectedString.FromString("Hello"))
+            {
+                var ps2 = LocalProtectedString.FromString("Hello", ps1.Entropy);
+                var ps3 = LocalProtectedString.FromString("Hello", ps2.EntropyBase64);
+
+                Assert.AreEqual(128, ps1.Entropy.Length);
+                Assert.AreEqual(128, ps2.Entropy.Length);
+                Assert.AreEqual(128, ps3.Entropy.Length);
+
+                Assert.AreEqual(true,  ps1.Entropy.SequenceEqual(ps2.Entropy));
+                Assert.AreEqual(true,  ps1.Entropy.SequenceEqual(ps3.Entropy));
+                Assert.AreEqual(false, ps1.EncryptedData.SequenceEqual(ps2.EncryptedData));
+
+                Assert.AreEqual("Hello", ps1.DecryptToString());
+                Assert.AreEqual("Hello", ps2.DecryptToString());
+                Assert.AreEqual("Hello", ps3.DecryptToString());
+
+
+                var ps4 = LocalProtectedString.FromEncryptedData(ps1.EncryptedData, ps1.Entropy);
+
+                Assert.AreEqual("Hello", ps4.DecryptToString());
+            }
+
         }
 
         [TestMethod]

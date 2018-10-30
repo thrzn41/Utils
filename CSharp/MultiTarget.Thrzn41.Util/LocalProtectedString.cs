@@ -117,17 +117,14 @@ namespace Thrzn41.Util
         /// Creates instance from char array.
         /// </summary>
         /// <param name="chars">Char array to be encrypted.</param>
-        /// <param name="entropyLength">Entropy length to be used on encrypting.</param>
+        /// <param name="entropy">Entropy to be used on encrypting.</param>
         /// <param name="scope"><see cref="DataProtectionScope"/> for encrypted data.</param>
         /// <returns>ProtectedString instance.</returns>
-        public static LocalProtectedString FromChars(char[] chars, int entropyLength = 128, DataProtectionScope scope = DataProtectionScope.CurrentUser)
+        public static LocalProtectedString FromChars(char[] chars, byte[] entropy, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
             var ps = new LocalProtectedString(scope);
 
-            if(entropyLength > 0)
-            {
-                ps.Entropy = RAND.NextBytes(entropyLength);
-            }
+            ps.Entropy = entropy;
 
             ps.EncryptedData = ProtectedData.Protect(
                                     ENCODING.GetBytes(chars),
@@ -135,6 +132,65 @@ namespace Thrzn41.Util
                                     scope);
 
             return ps;
+        }
+
+        /// <summary>
+        /// Creates instance from char array.
+        /// </summary>
+        /// <param name="chars">Char array to be encrypted.</param>
+        /// <param name="entropyBase64">Base64 Entropy to be used on encrypting.</param>
+        /// <param name="scope"><see cref="DataProtectionScope"/> for encrypted data.</param>
+        /// <returns>ProtectedString instance.</returns>
+        public static LocalProtectedString FromChars(char[] chars, string entropyBase64, DataProtectionScope scope = DataProtectionScope.CurrentUser)
+        {
+            return FromChars(chars, ((entropyBase64 != null) ? Convert.FromBase64String(entropyBase64) : null), scope);
+        }
+
+        /// <summary>
+        /// Creates instance from char array.
+        /// </summary>
+        /// <param name="chars">Char array to be encrypted.</param>
+        /// <param name="entropyLength">Entropy length to be used on encrypting.</param>
+        /// <param name="scope"><see cref="DataProtectionScope"/> for encrypted data.</param>
+        /// <returns>ProtectedString instance.</returns>
+        public static LocalProtectedString FromChars(char[] chars, int entropyLength = 128, DataProtectionScope scope = DataProtectionScope.CurrentUser)
+        {
+            return FromChars(chars, ((entropyLength > 0) ? RAND.NextBytes(entropyLength) : null), scope);
+        }
+
+
+        /// <summary>
+        /// Creates instance from string.
+        /// </summary>
+        /// <param name="str">string to be encrypted.</param>
+        /// <param name="entropy">Entropy to be used on encrypting.</param>
+        /// <param name="scope"><see cref="DataProtectionScope"/> for encrypted data.</param>
+        /// <returns>ProtectedString instance.</returns>
+        public static LocalProtectedString FromString(string str, byte[] entropy, DataProtectionScope scope = DataProtectionScope.CurrentUser)
+        {
+            var chars = str.ToCharArray();
+
+            var ps = FromChars(chars, entropy, scope);
+
+            if (!ClearChars(chars))
+            {
+                // Only for trying to bypass a future genius compiler optimization.
+                return ps;
+            }
+
+            return ps;
+        }
+
+        /// <summary>
+        /// Creates instance from string.
+        /// </summary>
+        /// <param name="str">string to be encrypted.</param>
+        /// <param name="entropyBase64">Base64 Entropy to be used on encrypting.</param>
+        /// <param name="scope"><see cref="DataProtectionScope"/> for encrypted data.</param>
+        /// <returns>ProtectedString instance.</returns>
+        public static LocalProtectedString FromString(string str, string entropyBase64, DataProtectionScope scope = DataProtectionScope.CurrentUser)
+        {
+            return FromString(str, ((entropyBase64 != null) ? Convert.FromBase64String(entropyBase64) : null), scope);
         }
 
         /// <summary>
@@ -146,17 +202,7 @@ namespace Thrzn41.Util
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromString(string str, int entropyLength = 128, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
-            var chars = str.ToCharArray();
-
-            var ps    = FromChars(chars, entropyLength, scope);
-
-            if ( !ClearChars(chars) )
-            {
-                // Only for trying to bypass a future genius compiler optimization.
-                return ps;
-            }
-            
-            return ps;
+            return FromString(str, ((entropyLength > 0) ? RAND.NextBytes(entropyLength) : null), scope);
         }
 
 
