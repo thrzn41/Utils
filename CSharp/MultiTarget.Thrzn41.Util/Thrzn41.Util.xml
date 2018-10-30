@@ -274,12 +274,48 @@
             </summary>
             <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encryption and decryption.</param>
         </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromChars(System.Char[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from char array.
+            </summary>
+            <param name="chars">Char array to be encrypted.</param>
+            <param name="entropy">Entropy to be used on encrypting.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromChars(System.Char[],System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from char array.
+            </summary>
+            <param name="chars">Char array to be encrypted.</param>
+            <param name="entropyBase64">Base64 Entropy to be used on encrypting.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
         <member name="M:Thrzn41.Util.LocalProtectedString.FromChars(System.Char[],System.Int32,System.Security.Cryptography.DataProtectionScope)">
             <summary>
             Creates instance from char array.
             </summary>
             <param name="chars">Char array to be encrypted.</param>
             <param name="entropyLength">Entropy length to be used on encrypting.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromString(System.String,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from string.
+            </summary>
+            <param name="str">string to be encrypted.</param>
+            <param name="entropy">Entropy to be used on encrypting.</param>
+            <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
+            <returns>ProtectedString instance.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.LocalProtectedString.FromString(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates instance from string.
+            </summary>
+            <param name="str">string to be encrypted.</param>
+            <param name="entropyBase64">Base64 Entropy to be used on encrypting.</param>
             <param name="scope"><see cref="T:System.Security.Cryptography.DataProtectionScope"/> for encrypted data.</param>
             <returns>ProtectedString instance.</returns>
         </member>
