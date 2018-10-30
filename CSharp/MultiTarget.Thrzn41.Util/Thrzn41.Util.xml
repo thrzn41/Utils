@@ -363,6 +363,28 @@
             Dispose.
             </summary>
         </member>
+        <member name="T:Thrzn41.Util.LockedBlock">
+            <summary>
+            Locked code block.
+            The main purpose of the class is to use in using statement.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.LockedBlock.Exit">
+            <summary>
+            Exits from the locked block.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.LockedBlock.Dispose(System.Boolean)">
+            <summary>
+            DIspose.
+            </summary>
+            <param name="disposing">disposing.</param>
+        </member>
+        <member name="M:Thrzn41.Util.LockedBlock.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
         <member name="T:Thrzn41.Util.PBEProtectedString">
             <summary>
             Provides features for encrypting and decrypting String by password based encryption.
@@ -707,6 +729,48 @@
             Slim lock that is allowing multiple threads for reading or exclusive writing.
             </summary>
         </member>
+        <member name="T:Thrzn41.Util.SlimLock.LockedReadBlock">
+            <summary>
+            Locked code block.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.SlimLock.LockedReadBlock.rwLock">
+            <summary>
+            ReaderWriter lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.LockedReadBlock.#ctor(System.Threading.ReaderWriterLockSlim)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="rwLock"><see cref="T:System.Threading.ReaderWriterLockSlim"/> to be used to exit the lock.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.LockedReadBlock.Exit">
+            <summary>
+            Exits from the locked block.
+            </summary>
+        </member>
+        <member name="T:Thrzn41.Util.SlimLock.LockedWriteBlock">
+            <summary>
+            Locked code block.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.SlimLock.LockedWriteBlock.rwLock">
+            <summary>
+            ReaderWriter lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.LockedWriteBlock.#ctor(System.Threading.ReaderWriterLockSlim)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="rwLock"><see cref="T:System.Threading.ReaderWriterLockSlim"/> to be used to exit the lock.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.LockedWriteBlock.Exit">
+            <summary>
+            Exits from the locked block.
+            </summary>
+        </member>
         <member name="F:Thrzn41.Util.SlimLock.rwLock">
             <summary>
             ReaderWriter lock.
@@ -722,6 +786,20 @@
             Creates Slim lock with policy.
             </summary>
             <param name="policy"><see cref="T:System.Threading.LockRecursionPolicy"/> that specifies whether a lock can be entered multiple times by the same thread.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.EnterLockedReadBlock">
+            <summary>
+            Enter the locked block in read mode.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <returns><see cref="T:Thrzn41.Util.LockedBlock"/> to be used in using statement.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.EnterLockedWriteBlock">
+            <summary>
+            Enter the locked block in write mode.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <returns><see cref="T:Thrzn41.Util.LockedBlock"/> to be used in using statement.</returns>
         </member>
         <member name="M:Thrzn41.Util.SlimLock.ExecuteInReaderLock``1(System.Func{``0})">
             <summary>

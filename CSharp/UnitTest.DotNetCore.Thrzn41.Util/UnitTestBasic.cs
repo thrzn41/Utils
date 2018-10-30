@@ -1,7 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Thrzn41.Util;
 
 namespace UnitTest.DotNetCore.Thrzn41.Util
@@ -170,7 +173,570 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
         }
 
-        
+
+        [TestMethod]
+        public void TestWriteWriteSlimLock()
+        {
+            // This testig method is NOT perfect way.
+            // But, likely work...
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                list.Add(1);
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[]{ t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                list.Add(1);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedWriteBlock())
+                        {
+                            Thread.Sleep(250);
+
+                            list.Add(0);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedWriteBlock())
+                        {
+                            list.Add(1);
+                        }
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+        }
+
+        [TestMethod]
+        public void TestWriteReadSlimLock()
+        {
+            // This testig method is NOT perfect way.
+            // But, likely work...
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                list.Add(1);
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                list.Add(1);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedWriteBlock())
+                        {
+                            Thread.Sleep(250);
+
+                            list.Add(0);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedReadBlock())
+                        {
+                            list.Add(1);
+                        }
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+        }
+
+        [TestMethod]
+        public void TestReadWriteSlimLock()
+        {
+            // This testig method is NOT perfect way.
+            // But, likely work...
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                list.Add(1);
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = slimLock.ExecuteInWriterLock(
+                            () =>
+                            {
+                                list.Add(1);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedReadBlock())
+                        {
+                            Thread.Sleep(250);
+
+                            list.Add(0);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedWriteBlock())
+                        {
+                            list.Add(1);
+                        }
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+        }
+
+        [TestMethod]
+        public void TestReadReadSlimLock()
+        {
+            // This testig method is NOT perfect way.
+            // But, likely work...
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                list.Add(1);
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(1, list[0]);
+                Assert.AreEqual(0, list[1]);
+
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                Thread.Sleep(250);
+
+                                list.Add(0);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = slimLock.ExecuteInReaderLock(
+                            () =>
+                            {
+                                list.Add(1);
+
+                                return Thread.CurrentThread.ManagedThreadId;
+                            });
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(1, list[0]);
+                Assert.AreEqual(0, list[1]);
+
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedReadBlock())
+                        {
+                            Thread.Sleep(250);
+
+                            list.Add(0);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedReadBlock())
+                        {
+                            list.Add(1);
+                        }
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(1, list[0]);
+                Assert.AreEqual(0, list[1]);
+
+            }
+        }
+
+
         [TestMethod]
         public void TestBuildQueryParam()
         {
