@@ -36,6 +36,65 @@ namespace Thrzn41.Util
     {
 
         /// <summary>
+        /// Locked code block.
+        /// </summary>
+        private class LockedReadBlock : Thrzn41.Util.LockedBlock
+        {
+            /// <summary>
+            /// ReaderWriter lock.
+            /// </summary>
+            private ReaderWriterLockSlim rwLock;
+
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="rwLock"><see cref="ReaderWriterLockSlim"/> to be used to exit the lock.</param>
+            internal LockedReadBlock(ReaderWriterLockSlim rwLock)
+            {
+                this.rwLock = rwLock;
+            }
+
+            /// <summary>
+            /// Exits from the locked block.
+            /// </summary>
+            public override void Exit()
+            {
+                this.rwLock.ExitReadLock();
+            }
+
+        }
+
+        /// <summary>
+        /// Locked code block.
+        /// </summary>
+        private class LockedWriteBlock : Thrzn41.Util.LockedBlock
+        {
+            /// <summary>
+            /// ReaderWriter lock.
+            /// </summary>
+            private ReaderWriterLockSlim rwLock;
+
+            /// <summary>
+            /// Constructor.
+            /// </summary>
+            /// <param name="rwLock"><see cref="ReaderWriterLockSlim"/> to be used to exit the lock.</param>
+            internal LockedWriteBlock(ReaderWriterLockSlim rwLock)
+            {
+                this.rwLock = rwLock;
+            }
+
+            /// <summary>
+            /// Exits from the locked block.
+            /// </summary>
+            public override void Exit()
+            {
+                this.rwLock.ExitWriteLock();
+            }
+
+        }
+
+
+        /// <summary>
         /// ReaderWriter lock.
         /// </summary>
         private ReaderWriterLockSlim rwLock;
@@ -60,6 +119,30 @@ namespace Thrzn41.Util
             this.rwLock = new ReaderWriterLockSlim(policy);
         }
 
+
+        /// <summary>
+        /// Enter the locked block in read mode.
+        /// <see cref="LockedBlock"/> is used to exit the locked block.
+        /// </summary>
+        /// <returns><see cref="LockedBlock"/> to be used in using statement.</returns>
+        public LockedBlock EnterLockedReadBlock()
+        {
+            this.rwLock.EnterReadLock();
+
+            return (new LockedReadBlock(this.rwLock));
+        }
+
+        /// <summary>
+        /// Enter the locked block in write mode.
+        /// <see cref="LockedBlock"/> is used to exit the locked block.
+        /// </summary>
+        /// <returns><see cref="LockedBlock"/> to be used in using statement.</returns>
+        public LockedBlock EnterLockedWriteBlock()
+        {
+            this.rwLock.EnterWriteLock();
+
+            return (new LockedWriteBlock(this.rwLock));
+        }
 
 
 
