@@ -738,6 +738,68 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
 
         [TestMethod]
+        public void TestUpgradeableReadSlimLock()
+        {
+            // This testig method is NOT perfect way.
+            // But, likely work...
+
+            using (var slimLock = new SlimLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (slimLock.EnterLockedReadBlock())
+                        {
+                            Thread.Sleep(250);
+
+                            list.Add(0);
+
+                            Thread.Sleep(250);
+
+                            list.Add(2);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (var block = slimLock.EnterLockedUpgradeableReadBlock())
+                        {
+                            list.Add(1);
+
+                            using (block.UpgradeToLockedWriteBlock())
+                            {
+                                list.Add(3);
+                            }
+                        }
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(1, list[0]);
+                Assert.AreEqual(0, list[1]);
+                Assert.AreEqual(2, list[2]);
+                Assert.AreEqual(3, list[3]);
+
+            }
+        }
+
+
+        [TestMethod]
         public void TestBuildQueryParam()
         {
             var nvc1 = new NameValueCollection();

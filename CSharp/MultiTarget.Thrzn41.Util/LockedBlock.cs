@@ -38,7 +38,7 @@ namespace Thrzn41.Util
         /// <summary>
         /// Exits from the locked block.
         /// </summary>
-        public abstract void Exit();
+        protected abstract void Exit();
 
 
         #region IDisposable Support
