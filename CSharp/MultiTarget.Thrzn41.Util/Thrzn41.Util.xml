@@ -731,7 +731,7 @@
         </member>
         <member name="T:Thrzn41.Util.SlimLock.LockedReadBlock">
             <summary>
-            Locked code block.
+            Locked code block in read mode.
             </summary>
         </member>
         <member name="F:Thrzn41.Util.SlimLock.LockedReadBlock.rwLock">
@@ -752,7 +752,7 @@
         </member>
         <member name="T:Thrzn41.Util.SlimLock.LockedWriteBlock">
             <summary>
-            Locked code block.
+            Locked code block in write mode.
             </summary>
         </member>
         <member name="F:Thrzn41.Util.SlimLock.LockedWriteBlock.rwLock">
@@ -770,6 +770,34 @@
             <summary>
             Exits from the locked block.
             </summary>
+        </member>
+        <member name="T:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock">
+            <summary>
+            Locked code block in upgradeable read mode.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock.rwLock">
+            <summary>
+            ReaderWriter lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock.#ctor(System.Threading.ReaderWriterLockSlim)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="rwLock"><see cref="T:System.Threading.ReaderWriterLockSlim"/> to be used to exit the lock.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock.Exit">
+            <summary>
+            Exits from the locked block.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock.UpgradeToLockedWriteBlock">
+            <summary>
+            Upgrades the lock block to write mode.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <returns><see cref="T:Thrzn41.Util.SlimLock.LockedWriteBlock"/> to be used in using statement.</returns>
         </member>
         <member name="F:Thrzn41.Util.SlimLock.rwLock">
             <summary>
@@ -792,14 +820,21 @@
             Enter the locked block in read mode.
             <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
             </summary>
-            <returns><see cref="T:Thrzn41.Util.LockedBlock"/> to be used in using statement.</returns>
+            <returns><see cref="T:Thrzn41.Util.SlimLock.LockedReadBlock"/> to be used in using statement.</returns>
         </member>
         <member name="M:Thrzn41.Util.SlimLock.EnterLockedWriteBlock">
             <summary>
             Enter the locked block in write mode.
             <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
             </summary>
-            <returns><see cref="T:Thrzn41.Util.LockedBlock"/> to be used in using statement.</returns>
+            <returns><see cref="T:Thrzn41.Util.SlimLock.LockedWriteBlock"/> to be used in using statement.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.SlimLock.EnterLockedUpgradeableReadBlock">
+            <summary>
+            Enter the locked block in read mode.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <returns><see cref="T:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock"/> to be used in using statement.</returns>
         </member>
         <member name="M:Thrzn41.Util.SlimLock.ExecuteInReaderLock``1(System.Func{``0})">
             <summary>
