@@ -4,6 +4,58 @@
         <name>Thrzn41.Util</name>
     </assembly>
     <members>
+        <member name="T:Thrzn41.Util.CacheEnabledSlimLock">
+            <summary>
+            Slim lock that is allowing multiple threads for reading or exclusive writing.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CacheEnabledSlimLock.cachedLRB">
+            <summary>
+            Cached <see cref="T:Thrzn41.Util.SlimLock.LockedReadBlock"/>.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CacheEnabledSlimLock.cachedLWB">
+            <summary>
+            Cached <see cref="T:Thrzn41.Util.SlimLock.LockedWriteBlock"/>.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CacheEnabledSlimLock.cachedLURB">
+            <summary>
+            Cached <see cref="T:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock"/>.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.CacheEnabledSlimLock.#ctor">
+            <summary>
+            Creates cache enabled Slim lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.CacheEnabledSlimLock.#ctor(System.Threading.LockRecursionPolicy)">
+            <summary>
+            Creates cache enabled Slim lock with policy.
+            </summary>
+            <param name="policy"><see cref="T:System.Threading.LockRecursionPolicy"/> that specifies whether a lock can be entered multiple times by the same thread.</param>
+        </member>
+        <member name="M:Thrzn41.Util.CacheEnabledSlimLock.EnterLockedReadBlock">
+            <summary>
+            Enter the locked block in read mode.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <returns><see cref="T:Thrzn41.Util.SlimLock.LockedReadBlock"/> to be used in using statement.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.CacheEnabledSlimLock.EnterLockedWriteBlock">
+            <summary>
+            Enter the locked block in write mode.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <returns><see cref="T:Thrzn41.Util.SlimLock.LockedWriteBlock"/> to be used in using statement.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.CacheEnabledSlimLock.EnterLockedUpgradeableReadBlock">
+            <summary>
+            Enter the locked block in read mode.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <returns><see cref="T:Thrzn41.Util.SlimLock.LockedUpgradeableReadBlock"/> to be used in using statement.</returns>
+        </member>
         <member name="T:Thrzn41.Util.CryptoRandom">
             <summary>
             Provides features for generating cryptographic ramdom number.
@@ -374,12 +426,6 @@
             Exits from the locked block.
             </summary>
         </member>
-        <member name="M:Thrzn41.Util.LockedBlock.Dispose(System.Boolean)">
-            <summary>
-            DIspose.
-            </summary>
-            <param name="disposing">disposing.</param>
-        </member>
         <member name="M:Thrzn41.Util.LockedBlock.Dispose">
             <summary>
             Dispose.
@@ -724,6 +770,76 @@
               Looks up a localized string similar to Uri scheme is not https or http..
             </summary>
         </member>
+        <member name="T:Thrzn41.Util.SlimAsyncLock">
+            <summary>
+            Slim async lock that is allowing multiple tasks for shared resouces.
+            </summary>
+        </member>
+        <member name="T:Thrzn41.Util.SlimAsyncLock.LockedAsyncBlock">
+            <summary>
+            Locked code block.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.SlimAsyncLock.LockedAsyncBlock.semaphore">
+            <summary>
+            Semaphore to lock a task.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.LockedAsyncBlock.#ctor(System.Threading.SemaphoreSlim)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="semaphore"><see cref="T:System.Threading.SemaphoreSlim"/> to lock.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.LockedAsyncBlock.Exit">
+            <summary>
+            Exits from the locked block.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.SlimAsyncLock.semaphore">
+            <summary>
+            Semaphore to lock a task.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.#ctor">
+            <summary>
+            Creates Slim async lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.EnterLockedAsyncBlockAsync(System.Nullable{System.Threading.CancellationToken})">
+            <summary>
+            Enter the async locked block.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/> to cancel.</param>
+            <returns><see cref="T:Thrzn41.Util.LockedBlock"/>  to be used in using statement.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.ExecuteInLockAsync(System.Func{System.Threading.Tasks.Task})">
+            <summary>
+            Executes in lock.
+            </summary>
+            <param name="func">This function is executed in reader lock.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task"/> of the async operation.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.ExecuteInLockAsync``1(System.Func{System.Threading.Tasks.Task{``0}})">
+            <summary>
+            Executes in lock.
+            </summary>
+            <typeparam name="TResult">Type of result.</typeparam>
+            <param name="func">Function that returns value.This function is executed in reader lock.</param>
+            <returns><see cref="T:System.Threading.Tasks.Task`1"/> of the async operation.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">disposing.</param>
+        </member>
+        <member name="M:Thrzn41.Util.SlimAsyncLock.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
         <member name="T:Thrzn41.Util.SlimLock">
             <summary>
             Slim lock that is allowing multiple threads for reading or exclusive writing.
@@ -856,13 +972,13 @@
             <summary>
             Executes in reader lock.
             </summary>
-            <param name="func">Function that returns value.This function is executed in reader lock.</param>
+            <param name="func">This function is executed in reader lock.</param>
         </member>
         <member name="M:Thrzn41.Util.SlimLock.ExecuteInWriterLock(System.Action)">
             <summary>
             Executes in reader lock.
             </summary>
-            <param name="func">Function that returns value.This function is executed in reader lock.</param>
+            <param name="func">This function is executed in reader lock.</param>
         </member>
         <member name="M:Thrzn41.Util.SlimLock.Dispose(System.Boolean)">
             <summary>

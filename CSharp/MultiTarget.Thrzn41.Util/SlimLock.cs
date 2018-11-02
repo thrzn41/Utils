@@ -43,7 +43,7 @@ namespace Thrzn41.Util
             /// <summary>
             /// ReaderWriter lock.
             /// </summary>
-            private ReaderWriterLockSlim rwLock;
+            private readonly ReaderWriterLockSlim rwLock;
 
             /// <summary>
             /// Constructor.
@@ -139,7 +139,7 @@ namespace Thrzn41.Util
         /// <summary>
         /// ReaderWriter lock.
         /// </summary>
-        private ReaderWriterLockSlim rwLock;
+        protected ReaderWriterLockSlim rwLock;
 
 
 
@@ -167,10 +167,14 @@ namespace Thrzn41.Util
         /// <see cref="LockedBlock"/> is used to exit the locked block.
         /// </summary>
         /// <returns><see cref="LockedReadBlock"/> to be used in using statement.</returns>
-        public LockedReadBlock EnterLockedReadBlock()
+        public virtual LockedReadBlock EnterLockedReadBlock()
         {
             this.rwLock.EnterReadLock();
 
+            // For a higher performance, the cached LockedReadBlock can be used.
+            // However, a new instance is created for each requests in current design,
+            // bacause each LockedBlocks should be independent.
+            // If you want higher performance, you can override this method, then cache and return the cached LockedBlock.
             return (new LockedReadBlock(this.rwLock));
         }
 
@@ -179,10 +183,14 @@ namespace Thrzn41.Util
         /// <see cref="LockedBlock"/> is used to exit the locked block.
         /// </summary>
         /// <returns><see cref="LockedWriteBlock"/> to be used in using statement.</returns>
-        public LockedWriteBlock EnterLockedWriteBlock()
+        public virtual LockedWriteBlock EnterLockedWriteBlock()
         {
             this.rwLock.EnterWriteLock();
 
+            // For a higher performance, the cached LockedWriteBlock can be used.
+            // However, a new instance is created for each requests in current design,
+            // bacause each LockedBlocks should be independent.
+            // If you want higher performance, you can override this method, then cache and return the cached LockedBlock.
             return (new LockedWriteBlock(this.rwLock));
         }
 
@@ -191,10 +199,14 @@ namespace Thrzn41.Util
         /// <see cref="LockedBlock"/> is used to exit the locked block.
         /// </summary>
         /// <returns><see cref="LockedUpgradeableReadBlock"/> to be used in using statement.</returns>
-        public LockedUpgradeableReadBlock EnterLockedUpgradeableReadBlock()
+        public virtual LockedUpgradeableReadBlock EnterLockedUpgradeableReadBlock()
         {
             this.rwLock.EnterUpgradeableReadLock();
 
+            // For a higher performance, the cached LockedUpgradeableReadBlock can be used.
+            // However, a new instance is created for each requests in current design,
+            // bacause each LockedBlocks should be independent.
+            // If you want higher performance, you can override this method, then cache and return the cached LockedBlock.
             return (new LockedUpgradeableReadBlock(this.rwLock));
         }
 
@@ -241,7 +253,7 @@ namespace Thrzn41.Util
         /// <summary>
         /// Executes in reader lock.
         /// </summary>
-        /// <param name="func">Function that returns value.This function is executed in reader lock.</param>
+        /// <param name="func">This function is executed in reader lock.</param>
         public void ExecuteInReaderLock(Action func)
         {
             this.rwLock.EnterReadLock();
@@ -258,7 +270,7 @@ namespace Thrzn41.Util
         /// <summary>
         /// Executes in reader lock.
         /// </summary>
-        /// <param name="func">Function that returns value.This function is executed in reader lock.</param>
+        /// <param name="func">This function is executed in reader lock.</param>
         public void ExecuteInWriterLock(Action func)
         {
             this.rwLock.EnterWriteLock();
