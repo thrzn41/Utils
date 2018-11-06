@@ -5,6 +5,15 @@
 > NOTE: Datetime format is `yyyy-MM-dd`.
 
 ---
+### [2018-11-06] Version 1.2.1
+
+#### [NEW FEATURES]
+
+* Add entering and exiting feature from lock by using statement.
+* Add SlimAsyncLock for async Task locking.
+* Add specified entropy feature in LocalProtectedString.
+
+---
 ### [2018-06-04] Version 1.1.2
 
 #### [NEW FEATURES]
