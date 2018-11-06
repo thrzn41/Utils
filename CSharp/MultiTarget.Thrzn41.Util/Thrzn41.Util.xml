@@ -4,6 +4,29 @@
         <name>Thrzn41.Util</name>
     </assembly>
     <members>
+        <member name="T:Thrzn41.Util.CacheEnabledSlimAsyncLock">
+            <summary>
+            Slim async lock that is allowing multiple tasks for shared resouces.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.CacheEnabledSlimAsyncLock.cachedLockedBlockTask">
+            <summary>
+            Cached task for <see cref="T:Thrzn41.Util.SlimAsyncLock.LockedAsyncBlock"/>.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.CacheEnabledSlimAsyncLock.#ctor">
+            <summary>
+            Creates cache enabled Slim async lock.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.CacheEnabledSlimAsyncLock.EnterLockedAsyncBlockAsync(System.Nullable{System.Threading.CancellationToken})">
+            <summary>
+            Enter the async locked block.
+            <see cref="T:Thrzn41.Util.LockedBlock"/> is used to exit the locked block.
+            </summary>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/> to cancel.</param>
+            <returns><see cref="T:Thrzn41.Util.LockedBlock"/>  to be used in using statement.</returns>
+        </member>
         <member name="T:Thrzn41.Util.CacheEnabledSlimLock">
             <summary>
             Slim lock that is allowing multiple threads for reading or exclusive writing.
@@ -814,19 +837,21 @@
             <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/> to cancel.</param>
             <returns><see cref="T:Thrzn41.Util.LockedBlock"/>  to be used in using statement.</returns>
         </member>
-        <member name="M:Thrzn41.Util.SlimAsyncLock.ExecuteInLockAsync(System.Func{System.Threading.Tasks.Task})">
+        <member name="M:Thrzn41.Util.SlimAsyncLock.ExecuteInLockAsync(System.Func{System.Threading.Tasks.Task},System.Nullable{System.Threading.CancellationToken})">
             <summary>
             Executes in lock.
             </summary>
             <param name="func">This function is executed in reader lock.</param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/> to cancel.</param>
             <returns><see cref="T:System.Threading.Tasks.Task"/> of the async operation.</returns>
         </member>
-        <member name="M:Thrzn41.Util.SlimAsyncLock.ExecuteInLockAsync``1(System.Func{System.Threading.Tasks.Task{``0}})">
+        <member name="M:Thrzn41.Util.SlimAsyncLock.ExecuteInLockAsync``1(System.Func{System.Threading.Tasks.Task{``0}},System.Nullable{System.Threading.CancellationToken})">
             <summary>
             Executes in lock.
             </summary>
             <typeparam name="TResult">Type of result.</typeparam>
             <param name="func">Function that returns value.This function is executed in reader lock.</param>
+            <param name="cancellationToken"><see cref="T:System.Threading.CancellationToken"/> to cancel.</param>
             <returns><see cref="T:System.Threading.Tasks.Task`1"/> of the async operation.</returns>
         </member>
         <member name="M:Thrzn41.Util.SlimAsyncLock.Dispose(System.Boolean)">

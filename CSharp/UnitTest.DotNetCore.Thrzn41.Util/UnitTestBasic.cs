@@ -1423,6 +1423,473 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
             }
         }
 
+        [TestMethod]
+        public void TestLockUnlockSlimLock()
+        {
+
+            // Lock and Unlock again and again.
+            // Confirm each locks are entered and released.
+
+            List<Task> tasks;
+            int locked;
+            int unlocked;
+
+            using (var slimLock = new SlimLock())
+            {
+                tasks    = new List<Task>();
+                locked   = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                slimLock.ExecuteInWriterLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                tasks    = new List<Task>();
+                locked   = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                slimLock.ExecuteInReaderLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                tasks    = new List<Task>();
+                locked   = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                int result = slimLock.ExecuteInWriterLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return 10;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+
+                                Assert.AreEqual(10, result);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                int result = slimLock.ExecuteInReaderLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return 10;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+
+                                Assert.AreEqual(10, result);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+
+            using (var slimLock = new SlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                using (slimLock.EnterLockedWriteBlock())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+                                  
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                using (slimLock.EnterLockedReadBlock())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new SlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                using (slimLock.EnterLockedUpgradeableReadBlock())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+        }
+
+        [TestMethod]
+        public void TestLockUnlockChacheEnabledSlimLock()
+        {
+
+            // Lock and Unlock again and again.
+            // Confirm each locks are entered and released.
+
+            List<Task> tasks;
+            int locked;
+            int unlocked;
+
+            using (var slimLock = new CacheEnabledSlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                slimLock.ExecuteInWriterLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new CacheEnabledSlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                slimLock.ExecuteInReaderLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new CacheEnabledSlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                int result = slimLock.ExecuteInWriterLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return 10;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+
+                                Assert.AreEqual(10, result);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new CacheEnabledSlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                int result = slimLock.ExecuteInReaderLock(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return 10;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+
+                                Assert.AreEqual(10, result);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+
+            using (var slimLock = new CacheEnabledSlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                using (slimLock.EnterLockedWriteBlock())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new CacheEnabledSlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                using (slimLock.EnterLockedReadBlock())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new CacheEnabledSlimLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            () =>
+                            {
+                                using (slimLock.EnterLockedUpgradeableReadBlock())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+        }
+
+
 
 
 
@@ -1551,6 +2018,524 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                 Assert.AreEqual(1, list[1]);
 
             }
+        }
+
+
+        [TestMethod]
+        public void TestCacheEnabledSlimAsyncLock()
+        {
+            // This testig method is NOT perfect way.
+            // But, likely work...
+
+            using (var slimAsyncLock = new CacheEnabledSlimAsyncLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = slimAsyncLock.ExecuteInLockAsync(
+                    async () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        await Task.Delay(500);
+
+                        list.Add(0);
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = slimAsyncLock.ExecuteInLockAsync(
+                    async () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        list.Add(1);
+
+                        await Task.Delay(10);
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+
+            using (var slimAsyncLock = new CacheEnabledSlimAsyncLock())
+            {
+                List<int> list = new List<int>();
+
+                var t0 = slimAsyncLock.ExecuteInLockAsync(
+                    async () =>
+                    {
+                        await Task.Delay(500);
+
+                        list.Add(0);
+
+                        return Thread.CurrentThread.ManagedThreadId;
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = slimAsyncLock.ExecuteInLockAsync(
+                    async () =>
+                    {
+                        list.Add(1);
+
+                        await Task.Delay(10);
+
+                        return Thread.CurrentThread.ManagedThreadId;
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(t0.Result, t1.Result);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+
+
+            using (var slimAsyncLock = new CacheEnabledSlimAsyncLock())
+            {
+                int threadId0 = 0;
+                int threadId1 = 0;
+
+                List<int> list = new List<int>();
+
+                var t0 = Task.Run(
+                    async () =>
+                    {
+                        threadId0 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (await slimAsyncLock.EnterLockedAsyncBlockAsync())
+                        {
+                            await Task.Delay(500);
+
+                            list.Add(0);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    async () =>
+                    {
+                        threadId1 = Thread.CurrentThread.ManagedThreadId;
+
+                        using (await slimAsyncLock.EnterLockedAsyncBlockAsync())
+                        {
+                            list.Add(1);
+                        }
+                    }
+                    );
+
+                Task.WaitAll(new Task[] { t0, t1 });
+
+                Assert.AreNotEqual(threadId0, threadId1);
+                Assert.AreEqual(0, list[0]);
+                Assert.AreEqual(1, list[1]);
+
+            }
+        }
+
+
+        [TestMethod]
+        public void TestLockUnlockSlimAsyncLock()
+        {
+
+            // Lock and Unlock again and again.
+            // Confirm each locks are entered and released.
+
+            List<Task> tasks;
+            int        locked;
+            int        unlocked;
+
+            using (var slimLock = new SlimAsyncLock())
+            {
+                tasks    = new List<Task>();
+                locked   = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            async () =>
+                            {
+                                await slimLock.ExecuteInLockAsync(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return Task.CompletedTask;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new SlimAsyncLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                var result = Task.FromResult(10);
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            async () =>
+                            {
+                                int r = await slimLock.ExecuteInLockAsync(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return result;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+
+                                Assert.AreEqual(10, r);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+
+            using (var slimLock = new SlimAsyncLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            async () =>
+                            {
+                                using (await slimLock.EnterLockedAsyncBlockAsync())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+
+        }
+
+
+        [TestMethod]
+        public void TestLockUnlockCacheEnabledSlimAsyncLock()
+        {
+
+            // Lock and Unlock again and again.
+            // Confirm each locks are entered and released.
+
+            List<Task> tasks;
+            int locked;
+            int unlocked;
+
+            using (var slimLock = new CacheEnabledSlimAsyncLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            async () =>
+                            {
+                                await slimLock.ExecuteInLockAsync(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return Task.CompletedTask;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+            using (var slimLock = new CacheEnabledSlimAsyncLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                var result = Task.FromResult(10);
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            async () =>
+                            {
+                                int r = await slimLock.ExecuteInLockAsync(
+                                    () =>
+                                    {
+                                        Interlocked.Increment(ref locked);
+
+                                        return result;
+                                    }
+                                );
+
+                                Interlocked.Increment(ref unlocked);
+
+                                Assert.AreEqual(10, r);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+
+            using (var slimLock = new CacheEnabledSlimAsyncLock())
+            {
+                tasks = new List<Task>();
+                locked = 0;
+                unlocked = 0;
+
+                for (int i = 0; i < 100; i++)
+                {
+                    tasks.Add(
+                        Task.Run(
+                            async () =>
+                            {
+                                using (await slimLock.EnterLockedAsyncBlockAsync())
+                                {
+                                    Interlocked.Increment(ref locked);
+                                }
+
+                                Interlocked.Increment(ref unlocked);
+                            }
+                        )
+                    );
+                }
+
+                Task.WaitAll(tasks.ToArray());
+
+                Assert.AreEqual(100, locked);
+                Assert.AreEqual(100, unlocked);
+            }
+
+
+        }
+
+        [TestMethod]
+        public void TestCancelSlimAsyncLock()
+        {
+
+            // Lock and Unlock again and again.
+            // Confirm each locks are entered and released.
+
+            using (var slimLock = new SlimAsyncLock())
+            {
+                CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(250));
+
+                var t0 = slimLock.ExecuteInLockAsync(
+                            async () =>
+                            {
+                                await Task.Delay(500);
+                            }
+                        );
+
+                Thread.Sleep(150);
+
+                var t1 = slimLock.ExecuteInLockAsync(
+                        async () =>
+                        {
+                            await Task.Delay(10);
+                        },
+                        cts.Token
+                    );
+
+                var e = Assert.ThrowsException<AggregateException>(
+                    () =>
+                    {
+                        Task.WaitAll(t0, t1);
+                    }
+                );
+
+                Assert.IsInstanceOfType(e.InnerException, typeof(TaskCanceledException));
+
+            }
+
+
+            using (var slimLock = new SlimAsyncLock())
+            {
+                CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(250));
+
+                var t0 = Task.Run(
+                    async () =>
+                    {
+                        using (await slimLock.EnterLockedAsyncBlockAsync())
+                        {
+                            await Task.Delay(500);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    async () =>
+                    {
+                        using (await slimLock.EnterLockedAsyncBlockAsync(cts.Token))
+                        {
+                            await Task.Delay(10);
+                        }
+                    }
+                    );
+
+                var e = Assert.ThrowsException<AggregateException>(
+                    () =>
+                    {
+                        Task.WaitAll(t0, t1);
+                    }
+                );
+
+                Assert.IsInstanceOfType(e.InnerException, typeof(TaskCanceledException));
+
+            }
+
+
+        }
+
+        [TestMethod]
+        public void TestCancelCacheEnabledSlimAsyncLock()
+        {
+
+            // Lock and Unlock again and again.
+            // Confirm each locks are entered and released.
+
+            using (var slimLock = new CacheEnabledSlimAsyncLock())
+            {
+                CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(250));
+
+                var t0 =  slimLock.ExecuteInLockAsync(
+                            async () =>
+                            {
+                                await Task.Delay(500);
+                            }
+                        );
+
+                Thread.Sleep(150);
+
+                var t1 = slimLock.ExecuteInLockAsync(
+                        async () =>
+                        {
+                            await Task.Delay(10);
+                        },
+                        cts.Token
+                    );
+
+                var e = Assert.ThrowsException<AggregateException>(
+                    () =>
+                    {
+                        Task.WaitAll(t0, t1);
+                    }
+                );
+
+                Assert.IsInstanceOfType(e.InnerException, typeof(TaskCanceledException));
+
+            }
+
+
+            using (var slimLock = new CacheEnabledSlimAsyncLock())
+            {
+                CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(250));
+
+                var t0 = Task.Run(
+                    async () =>
+                    {
+                        using (await slimLock.EnterLockedAsyncBlockAsync())
+                        {
+                            await Task.Delay(500);
+                        }
+                    }
+                    );
+
+                Thread.Sleep(150);
+
+                var t1 = Task.Run(
+                    async () =>
+                    {
+                        using (await slimLock.EnterLockedAsyncBlockAsync(cts.Token))
+                        {
+                            await Task.Delay(10);
+                        }
+                    }
+                    );
+
+                var e = Assert.ThrowsException<AggregateException>(
+                    () =>
+                    {
+                        Task.WaitAll(t0, t1);
+                    }
+                );
+
+                Assert.IsInstanceOfType(e.InnerException, typeof(TaskCanceledException));
+
+            }
+
+
         }
 
 

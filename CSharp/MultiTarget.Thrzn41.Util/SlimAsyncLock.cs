@@ -89,7 +89,7 @@ namespace Thrzn41.Util
         /// </summary>
         /// <param name="cancellationToken"><see cref="CancellationToken"/> to cancel.</param>
         /// <returns><see cref="LockedBlock"/>  to be used in using statement.</returns>
-        public async Task<LockedAsyncBlock> EnterLockedAsyncBlockAsync(CancellationToken? cancellationToken = null)
+        public virtual async Task<LockedAsyncBlock> EnterLockedAsyncBlockAsync(CancellationToken? cancellationToken = null)
         {
             if(cancellationToken.HasValue)
             {
@@ -112,10 +112,11 @@ namespace Thrzn41.Util
         /// Executes in lock.
         /// </summary>
         /// <param name="func">This function is executed in reader lock.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to cancel.</param>
         /// <returns><see cref="Task"/> of the async operation.</returns>
-        public async Task ExecuteInLockAsync(Func<Task> func)
+        public async Task ExecuteInLockAsync(Func<Task> func, CancellationToken? cancellationToken = null)
         {
-            using (await EnterLockedAsyncBlockAsync())
+            using (await EnterLockedAsyncBlockAsync(cancellationToken))
             {
                 await func();
             }
@@ -126,10 +127,11 @@ namespace Thrzn41.Util
         /// </summary>
         /// <typeparam name="TResult">Type of result.</typeparam>
         /// <param name="func">Function that returns value.This function is executed in reader lock.</param>
+        /// <param name="cancellationToken"><see cref="CancellationToken"/> to cancel.</param>
         /// <returns><see cref="Task{TResult}"/> of the async operation.</returns>
-        public async Task<TResult> ExecuteInLockAsync<TResult>(Func< Task<TResult> > func)
+        public async Task<TResult> ExecuteInLockAsync<TResult>(Func< Task<TResult> > func, CancellationToken? cancellationToken = null)
         {
-            using (await EnterLockedAsyncBlockAsync())
+            using (await EnterLockedAsyncBlockAsync(cancellationToken))
             {
                 return (await func());
             }
