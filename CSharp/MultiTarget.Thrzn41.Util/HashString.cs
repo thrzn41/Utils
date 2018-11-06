@@ -45,7 +45,7 @@ namespace Thrzn41.Util
         /// <summary>
         /// Hash algorithm to be used.
         /// </summary>
-        private HashAlgorithm hashAlgorithm;
+        private readonly HashAlgorithm hashAlgorithm;
 
 
         /// <summary>

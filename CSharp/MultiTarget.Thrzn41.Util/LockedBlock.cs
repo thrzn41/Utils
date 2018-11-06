@@ -41,47 +41,15 @@ namespace Thrzn41.Util
         protected abstract void Exit();
 
 
-        #region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
 
-        /// <summary>
-        /// DIspose.
-        /// </summary>
-        /// <param name="disposing">disposing.</param>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    this.Exit();
-                }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
-                disposedValue = true;
-            }
-        }
-
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~LockedBlock() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
-        // }
-
-        // This code added to correctly implement the disposable pattern.
         /// <summary>
         /// Dispose.
         /// </summary>
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            this.Exit();
         }
-        #endregion
 
     }
 
