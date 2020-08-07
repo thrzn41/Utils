@@ -1,0 +1,44 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LazyLoadTimeZoneMap>true</LazyLoadTimeZoneMap>
+    <LegacyCollections>true</LegacyCollections>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(LazyLoadTimeZoneMap)' == 'false' ">
+	  <DefineConstants>LAZY_LOAD_TIME_ZONE_MAP_DISABLED</DefineConstants>		
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(LegacyCollections)' == 'true' ">
+    <DefineConstants>DOTNETSTANDARD1_3;DOTNETCORE1_0;DOTNETFRAMEWORK4_5_2;DOTNETFRAMEWORK4_6_1</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MultiTarget.Thrzn41.Util\MultiTarget.Thrzn41.Util.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ResourceMessage\ErrorMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ErrorMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="ResourceMessage\ErrorMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

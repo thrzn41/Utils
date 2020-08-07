@@ -8,9 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Thrzn41.Util.ResourceMessage {
+namespace Tool.TimeZoneMap.ResourceMessage {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -40,7 +39,7 @@ namespace Thrzn41.Util.ResourceMessage {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Thrzn41.Util.ResourceMessage.ErrorMessages", typeof(ErrorMessages).GetTypeInfo().Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Tool.TimeZoneMap.ResourceMessage.ErrorMessages", typeof(ErrorMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -62,33 +61,6 @@ namespace Thrzn41.Util.ResourceMessage {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to byteLength is less than 0..
-        /// </summary>
-        internal static string ByteLengthLessThanZero {
-            get {
-                return ResourceManager.GetString("ByteLengthLessThanZero", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to charLength is less than 0..
-        /// </summary>
-        internal static string CharLengthLessThanZero {
-            get {
-                return ResourceManager.GetString("CharLengthLessThanZero", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to maxValue is less than 0..
-        /// </summary>
-        internal static string MaxValueLessThanZero {
-            get {
-                return ResourceManager.GetString("MaxValueLessThanZero", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to TimeZone id &apos;{0}&apos; is not found..
         /// </summary>
         internal static string TimeZondIdNotFound {
@@ -103,15 +75,6 @@ namespace Thrzn41.Util.ResourceMessage {
         internal static string TimeZoneInfoNotFoundForId {
             get {
                 return ResourceManager.GetString("TimeZoneInfoNotFoundForId", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Uri scheme is not https or http..
-        /// </summary>
-        internal static string UriSchemeIsNotHttpsOrHttp {
-            get {
-                return ResourceManager.GetString("UriSchemeIsNotHttpsOrHttp", resourceCulture);
             }
         }
     }

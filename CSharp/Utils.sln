@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MultiTarget.Thrzn41.Util", "MultiTarget.Thrzn41.Util\MultiTarget.Thrzn41.Util.csproj", "{6D8CAF16-261E-4DC3-8B1E-F8F6F836EFE0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTest.DotNetCore.Thrzn41.Util", "UnitTest.DotNetCore.Thrzn41.Util\UnitTest.DotNetCore.Thrzn41.Util.csproj", "{26A3C673-060E-473F-B206-A1B3823D55E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tool.TimeZoneMap", "Tool.TimeZoneMap\Tool.TimeZoneMap.csproj", "{B8A733E2-26AC-41C4-B70C-517BA7E31E79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest.MultiTarget.Thrzn41.Util", "UnitTest.MultiTarget.Thrzn41.Util\UnitTest.MultiTarget.Thrzn41.Util.csproj", "{B68DDCF3-E7E1-4370-8BC9-204BDB073A29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +19,14 @@ Global
 		{6D8CAF16-261E-4DC3-8B1E-F8F6F836EFE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D8CAF16-261E-4DC3-8B1E-F8F6F836EFE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D8CAF16-261E-4DC3-8B1E-F8F6F836EFE0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{26A3C673-060E-473F-B206-A1B3823D55E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{26A3C673-060E-473F-B206-A1B3823D55E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{26A3C673-060E-473F-B206-A1B3823D55E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{26A3C673-060E-473F-B206-A1B3823D55E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8A733E2-26AC-41C4-B70C-517BA7E31E79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8A733E2-26AC-41C4-B70C-517BA7E31E79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8A733E2-26AC-41C4-B70C-517BA7E31E79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8A733E2-26AC-41C4-B70C-517BA7E31E79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B68DDCF3-E7E1-4370-8BC9-204BDB073A29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B68DDCF3-E7E1-4370-8BC9-204BDB073A29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B68DDCF3-E7E1-4370-8BC9-204BDB073A29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B68DDCF3-E7E1-4370-8BC9-204BDB073A29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

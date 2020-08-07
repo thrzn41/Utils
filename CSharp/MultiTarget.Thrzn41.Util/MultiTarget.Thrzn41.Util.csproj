@@ -1,82 +1,107 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp1.0;netcoreapp2.0;net452;net461</TargetFrameworks>
-    <AssemblyName>Thrzn41.Util</AssemblyName>
-    <RootNamespace>Thrzn41.Util</RootNamespace>
-    <Copyright>Copyright (c) 2018 thrzn41</Copyright>
-    <Authors>thrzn41</Authors>
-    <Company>thrzn41</Company>
-    <Version>1.2.1</Version>
-    <PackageProjectUrl>https://github.com/thrzn41/Utils</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/thrzn41/Utils</RepositoryUrl>
-    <PackageTags>Utils</PackageTags>
-    <PackageLicenseUrl>https://github.com/thrzn41/Utils/blob/master/LICENSE</PackageLicenseUrl>
-    <Description>Utils that are used in thrzn41 projects.</Description>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.2.1.0</AssemblyVersion>
-    <FileVersion>1.2.1.0</FileVersion>
-    <DocumentationFile>Thrzn41.Util.xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>netstandard1.3;netstandard2.0;netcoreapp1.0;netcoreapp2.0;net452;net461;net472</TargetFrameworks>
+		<AssemblyName>Thrzn41.Util</AssemblyName>
+		<RootNamespace>Thrzn41.Util</RootNamespace>
+		<Copyright>Copyright (c) 2020 thrzn41</Copyright>
+		<Authors>thrzn41</Authors>
+		<Company>thrzn41</Company>
+		<Version>1.3.1</Version>
+		<PackageProjectUrl>https://github.com/thrzn41/Utils</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/thrzn41/Utils</RepositoryUrl>
+		<PackageTags>Utils</PackageTags>
+		<PackageLicenseUrl></PackageLicenseUrl>
+		<Description>Utils that are used in thrzn41 projects.</Description>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<AssemblyVersion>1.3.1.0</AssemblyVersion>
+		<FileVersion>1.3.1.0</FileVersion>
+		<DocumentationFile>Thrzn41.Util.xml</DocumentationFile>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
-    <DefineConstants>DOTNETSTANDARD;DOTNETSTANDARD1_3</DefineConstants>
-  </PropertyGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Resources\TzIdToWindowsId.dat" />
+		<EmbeddedResource Include="Resources\WindowsIdToTzId.dat" />
+		<EmbeddedResource Include="Resources\WindowsIdToTzIdTerritoryIndipendent.dat" />
+	</ItemGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
-    <DefineConstants>DOTNETSTANDARD;DOTNETSTANDARD2_0</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' ">
+		<DefineConstants>DOTNETSTANDARD;DOTNETSTANDARD1_3</DefineConstants>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <DefineConstants>DOTNETCORE;DOTNETCORE1_0</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netstandard2.0' ">
+		<DefineConstants>DOTNETSTANDARD;DOTNETSTANDARD2_0</DefineConstants>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
-    <DefineConstants>DOTNETCORE;DOTNETCORE2_0</DefineConstants>
-  </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
-    <DefineConstants>DOTNETFRAMEWORK;DOTNETFRAMEWORK4_5_2</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp1.0' ">
+		<DefineConstants>DOTNETCORE;DOTNETCORE1_0</DefineConstants>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
-    <DefineConstants>DOTNETFRAMEWORK;DOTNETFRAMEWORK4_6_1</DefineConstants>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'netcoreapp2.0' ">
+		<DefineConstants>DOTNETCORE;DOTNETCORE2_0</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' OR '$(TargetFramework)' == 'netcoreapp1.0' ">
-    <PackageReference Include="System.Security.SecureString" Version="4.3.0" />
-    <PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
-  </ItemGroup>
+	
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net452' ">
+		<DefineConstants>DOTNETFRAMEWORK;DOTNETFRAMEWORK4_5_2</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'netcoreapp1.0' OR '$(TargetFramework)' == 'netcoreapp2.0' ">
-      <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.5.0" />
-  </ItemGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
+		<DefineConstants>DOTNETFRAMEWORK;DOTNETFRAMEWORK4_6_1</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' OR '$(TargetFramework)' == 'net461' ">
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net461' ">
+		<DefineConstants>DOTNETFRAMEWORK;DOTNETFRAMEWORK4_6_1</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Compile Update="ResourceMessage\ErrorMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ErrorMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<PropertyGroup Condition=" '$(TargetFramework)' == 'net472' ">
+		<DefineConstants>DOTNETFRAMEWORK;DOTNETFRAMEWORK4_7_2</DefineConstants>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Update="ResourceMessage\ErrorMessages.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' OR '$(TargetFramework)' == 'netcoreapp1.0' ">
+		<PackageReference Include="System.Security.SecureString" Version="4.3.0" />
+		<PackageReference Include="System.Collections.Specialized" Version="4.3.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.3' OR '$(TargetFramework)' == 'netstandard2.0' OR '$(TargetFramework)' == 'netcoreapp1.0' OR '$(TargetFramework)' == 'netcoreapp2.0' ">
+		<PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.7.0" />
+	</ItemGroup>
+
+	<ItemGroup Condition=" '$(TargetFramework)' == 'net452' OR '$(TargetFramework)' == 'net461' OR '$(TargetFramework)' == 'net472'">
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="System.Security" />
+		<Reference Include="System.Xml.Linq" />
+		<Reference Include="System.Data.DataSetExtensions" />
+		<Reference Include="Microsoft.CSharp" />
+		<Reference Include="System.Data" />
+		<Reference Include="System.Net.Http" />
+		<Reference Include="System.Xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Compile Update="ResourceMessage\ErrorMessages.Designer.cs">
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>ErrorMessages.resx</DependentUpon>
+		</Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Update="ResourceMessage\ErrorMessages.resx">
+			<Generator>ResXFileCodeGenerator</Generator>
+			<LastGenOutput>ErrorMessages.Designer.cs</LastGenOutput>
+		</EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="..\..\LICENSE">
+			<Pack>True</Pack>
+			<PackagePath></PackagePath>
+		</None>
+	</ItemGroup>
 
 </Project>

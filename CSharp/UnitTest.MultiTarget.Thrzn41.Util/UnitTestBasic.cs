@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Thrzn41.Util;
 
-namespace UnitTest.DotNetCore.Thrzn41.Util
+namespace UnitTest.MultiTarget.Thrzn41.Util
 {
     [TestClass]
     public class UnitTestBasic
@@ -1911,7 +1911,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                     {
                         threadId0 = Thread.CurrentThread.ManagedThreadId;
 
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
                     }
@@ -1932,7 +1932,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -1946,7 +1947,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                 var t0 = slimAsyncLock.ExecuteInLockAsync(
                     async () =>
                     {
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
 
@@ -1969,7 +1970,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(t0.Result, t1.Result);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(t0.Result, t1.Result);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -1990,7 +1992,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                         using (await slimAsyncLock.EnterLockedAsyncBlockAsync())
                         {
-                            await Task.Delay(500);
+                            await Task.Delay(250);
 
                             list.Add(0);
                         }
@@ -2013,7 +2015,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -2039,7 +2042,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                     {
                         threadId0 = Thread.CurrentThread.ManagedThreadId;
 
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
                     }
@@ -2060,7 +2063,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -2074,7 +2078,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                 var t0 = slimAsyncLock.ExecuteInLockAsync(
                     async () =>
                     {
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
 
@@ -2097,7 +2101,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(t0.Result, t1.Result);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(t0.Result, t1.Result);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -2118,7 +2123,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                         using (await slimAsyncLock.EnterLockedAsyncBlockAsync())
                         {
-                            await Task.Delay(500);
+                            await Task.Delay(250);
 
                             list.Add(0);
                         }
@@ -2141,7 +2146,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
