@@ -86,17 +86,17 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <summary>
         /// WindowsId to TzId map(Lazy Load).
         /// </summary>
-        private static readonly Lazy< ReadOnlyDictionary<string, string> > LAZY_WINDOWS_ID_TO_TZ_ID_MAP;
+        private static readonly Lazy<ReadOnlyDictionary<string, string>> LAZY_WINDOWS_ID_TO_TZ_ID_MAP;
 
         /// <summary>
         /// TzId to WindowsId map(Lazy Load).
         /// </summary>
-        private static readonly Lazy< ReadOnlyDictionary<string, string> > LAZY_TZ_ID_TO_WINDOWS_ID_MAP;
+        private static readonly Lazy<ReadOnlyDictionary<string, string>> LAZY_TZ_ID_TO_WINDOWS_ID_MAP;
 
         /// <summary>
         /// WindowsId to TzId map(Lazy Load).
         /// </summary>
-        private static readonly Lazy< ReadOnlyDictionary<string, string> > LAZY_WINDOWS_ID_TO_TZ_ID_TERRITORY_INDIPENDENT_MAP;
+        private static readonly Lazy<ReadOnlyDictionary<string, string>> LAZY_WINDOWS_ID_TO_TZ_ID_TERRITORY_INDIPENDENT_MAP;
 
 
         /// <summary>
@@ -168,21 +168,21 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         private static int INIT_COUNT = 0;
 
 
-    #if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
+#if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
 
         /// <summary>
         /// TimeZone id database to reduce reference count.
         /// </summary>
         private static Dictionary<string, string> TIME_ZONE_ID_DATABASE = null;
 
-    #else
+#else
 
         /// <summary>
         /// TimeZone id database to reduce reference count.
         /// </summary>
         private static HashSet<string> TIME_ZONE_ID_DATABASE = null;
     
-    #endif
+#endif
 
         /// <summary>
         /// Try add to TimeZone Id map.
@@ -193,7 +193,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <returns>true if the key, value paire added to the map.</returns>
         private static bool TryAddToDictionary(Dictionary<string, string> dictionary, string key, string value)
         {
-            if( !dictionary.ContainsKey(key) )
+            if (!dictionary.ContainsKey(key))
             {
                 dictionary.Add(key, value);
                 return true;
@@ -210,20 +210,20 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <param name="resourceName">Source resource of the map.</param>
         private static void loadTimeZoneIdMap(Dictionary<string, string> timeZoneIdMap, string resourceName)
         {
-            using (var lockW  = LOCK.EnterLockedWriteBlock())
+            using (var lockW = LOCK.EnterLockedWriteBlock())
             using (var stream = (typeof(TimeZoneUtils)).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
             using (var reader = new StreamReader(stream, UTF8Utils.UTF8_WITHOUT_BOM))
             {
-                int    index;
+                int index;
                 string line, src, dest, rsrc, rdest;
 
                 if (TIME_ZONE_ID_DATABASE == null)
                 {
-    #if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
+#if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
                     TIME_ZONE_ID_DATABASE = new Dictionary<string, string>(/* $TIME_ZONE_ID_MAX$ */);
-    #else
+#else
                     TIME_ZONE_ID_DATABASE = new HashSet<string>(/* $TIME_ZONE_ID_MAX$ */);
-    #endif
+#endif
                 }
 
                 while (!reader.EndOfStream)
@@ -236,26 +236,26 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
 
                         if (index > 0)
                         {
-                            src  = line.Substring(0, index);
+                            src = line.Substring(0, index);
                             dest = line.Substring(index + 1);
 
-                            if ( !TIME_ZONE_ID_DATABASE.TryGetValue(src, out rsrc) )
+                            if (!TIME_ZONE_ID_DATABASE.TryGetValue(src, out rsrc))
                             {
-    #if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
+#if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
                                 TryAddToDictionary(TIME_ZONE_ID_DATABASE, src, src);
-    #else
+#else
                                 TIME_ZONE_ID_DATABASE.Add(src);
-    #endif
+#endif
                                 rsrc = src;
                             }
 
-                            if ( !TIME_ZONE_ID_DATABASE.TryGetValue(dest, out rdest) )
+                            if (!TIME_ZONE_ID_DATABASE.TryGetValue(dest, out rdest))
                             {
-    #if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
+#if (DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
                                 TryAddToDictionary(TIME_ZONE_ID_DATABASE, dest, dest);
-    #else
+#else
                                 TIME_ZONE_ID_DATABASE.Add(dest);
-    #endif
+#endif
                                 rdest = dest;
                             }
 
@@ -270,9 +270,9 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
                 if (INIT_COUNT >= 3)
                 {
                     TIME_ZONE_ID_DATABASE.Clear();
-    #if !(DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
+#if !(DOTNETSTANDARD1_3 || DOTNETSTANDARD2_0 || DOTNETCORE1_0 || DOTNETFRAMEWORK4_5_2 || DOTNETFRAMEWORK4_6_1)
                     TIME_ZONE_ID_DATABASE.TrimExcess();
-    #endif
+#endif
                     TIME_ZONE_ID_DATABASE = null;
                 }
             }
@@ -280,11 +280,11 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
 
 #endif
 
-                    /// <summary>
-                    /// Loads WindowsId to TzId TimeZone map.
-                    /// </summary>
-                    /// <returns></returns>
-                    private static ReadOnlyDictionary<string, string> loadWindowsIdToTzIdMap()
+        /// <summary>
+        /// Loads WindowsId to TzId TimeZone map.
+        /// </summary>
+        /// <returns></returns>
+        private static ReadOnlyDictionary<string, string> loadWindowsIdToTzIdMap()
         {
             try
             {
@@ -374,7 +374,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
 
             LAZY_WINDOWS_ID_TO_TZ_ID_MAP = new Lazy<ReadOnlyDictionary<string, string>>(loadWindowsIdToTzIdMap, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
             LAZY_TZ_ID_TO_WINDOWS_ID_MAP = new Lazy<ReadOnlyDictionary<string, string>>(loadTzIdToWindowsIdMap, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
-            
+
             LAZY_WINDOWS_ID_TO_TZ_ID_TERRITORY_INDIPENDENT_MAP = new Lazy<ReadOnlyDictionary<string, string>>(loadWindowsIdToTzIdMap2, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 #else
             WINDOWS_ID_TO_TZ_ID_MAP = loadWindowsIdToTzIdMap();
@@ -438,7 +438,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         {
             string id;
 
-            if( !TryGetTzIdFromWindowsId(windowsId, out id, preferredTzId) )
+            if (!TryGetTzIdFromWindowsId(windowsId, out id, preferredTzId))
             {
                 throw new TimeZoneInfoNotFoundException(String.Format(ResourceMessage.ErrorMessages.TimeZondIdNotFound, windowsId));
             }
@@ -454,19 +454,19 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <returns>true if the tz database id is found, otherwise false.</returns>
         public static bool TryGetTzIdsFromWindowsId(string windowsId, out string[] tzIds)
         {
-            if(WINDOWS_ID_TO_TZ_ID_MAP.ContainsKey(windowsId))
+            if (WINDOWS_ID_TO_TZ_ID_MAP.ContainsKey(windowsId))
             {
                 var items = new List<string>();
 
                 foreach (var kv in TZ_ID_TO_WINDOWS_ID_MAP)
                 {
-                    if(kv.Value == windowsId)
+                    if (kv.Value == windowsId)
                     {
                         items.Add(kv.Key);
                     }
                 }
 
-                if(items.Count > 0)
+                if (items.Count > 0)
                 {
                     tzIds = items.ToArray();
                     return true;
@@ -517,7 +517,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         {
             string id;
 
-            if ( !TryGetWindowsIdFromTzId(tzId, out id) )
+            if (!TryGetWindowsIdFromTzId(tzId, out id))
             {
                 throw new TimeZoneInfoNotFoundException(String.Format(ResourceMessage.ErrorMessages.TimeZondIdNotFound, tzId));
             }
@@ -555,7 +555,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         {
             string id;
 
-            if ( !TryGetTzIdFromTimeZoneInfo(timeZoneInfo, out id, preferredTzId) )
+            if (!TryGetTzIdFromTimeZoneInfo(timeZoneInfo, out id, preferredTzId))
             {
                 throw new TimeZoneInfoNotFoundException(String.Format(ResourceMessage.ErrorMessages.TimeZondIdNotFound, timeZoneInfo.Id));
             }
@@ -573,7 +573,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         {
             string id = timeZoneInfo.Id;
 
-            if(WINDOWS_ID_TO_TZ_ID_MAP.ContainsKey(id))
+            if (WINDOWS_ID_TO_TZ_ID_MAP.ContainsKey(id))
             {
                 windowsId = id;
                 return true;
@@ -591,7 +591,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         {
             string id;
 
-            if ( !TryGetWindowsIdFromTimeZoneInfo(timeZoneInfo, out id) )
+            if (!TryGetWindowsIdFromTimeZoneInfo(timeZoneInfo, out id))
             {
                 throw new TimeZoneInfoNotFoundException(String.Format(ResourceMessage.ErrorMessages.TimeZondIdNotFound, timeZoneInfo.Id));
             }
@@ -612,14 +612,14 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             try
             {
                 timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(id);
-                exception    = null;
+                exception = null;
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 timeZoneInfo = null;
-                exception    = ex;
+                exception = ex;
             }
 
             return false;
@@ -649,13 +649,13 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         private static bool tryGetTzTimeZoneInfoFromWindowsId(string windowsId, out TimeZoneInfo timeZoneInfo, out Exception exception, PreferredTzId preferredTzId = PreferredTzId.Default)
         {
             TimeZoneInfo tzi = null;
-            Exception    ex  = null;
+            Exception ex = null;
 
             string id;
 
             if (TryGetTzIdFromWindowsId(windowsId, out id, preferredTzId))
             {
-                if ( !tryGetSystemTimeZoneInfo(id, out tzi, out ex) )
+                if (!tryGetSystemTimeZoneInfo(id, out tzi, out ex))
                 {
                     string id2;
 
@@ -667,9 +667,9 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             }
 
             timeZoneInfo = tzi;
-            exception    = ex;
+            exception = ex;
 
-            if(timeZoneInfo == null)
+            if (timeZoneInfo == null)
             {
                 return false;
             }
@@ -689,10 +689,10 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             try
             {
                 timeZoneInfo = GetTimeZoneInfoFromTzId(tzId);
-                
+
                 return true;
             }
-            catch(TimeZoneInfoNotFoundException)
+            catch (TimeZoneInfoNotFoundException)
             {
                 timeZoneInfo = null;
                 return false;
@@ -708,16 +708,16 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <exception cref="TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
         public static TimeZoneInfo GetTimeZoneInfoFromTzId(string tzId)
         {
-            TimeZoneInfo result    = null;
-            Exception    exception = null;
+            TimeZoneInfo result = null;
+            Exception exception = null;
 
             if (PRESUME_WINDOWS_TIME_ZONE_ENVIRONMENT)
             {
                 string id;
 
-                if( TryGetWindowsIdFromTzId(tzId, out id))
+                if (TryGetWindowsIdFromTzId(tzId, out id))
                 {
-                    if( !tryGetSystemTimeZoneInfo(id, out result, out exception) )
+                    if (!tryGetSystemTimeZoneInfo(id, out result, out exception))
                     {
                         tryGetSystemTimeZoneInfo(tzId, out result);
                     }
@@ -729,7 +729,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             }
             else
             {
-                if( !tryGetSystemTimeZoneInfo(tzId, out result, out exception) )
+                if (!tryGetSystemTimeZoneInfo(tzId, out result, out exception))
                 {
                     string id;
 
@@ -787,11 +787,11 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         public static TimeZoneInfo GetTimeZoneInfoFromWindowsId(string windowsId, PreferredTzId preferredTzId = PreferredTzId.Default)
         {
             TimeZoneInfo result;
-            Exception    exception;
+            Exception exception;
 
-            if(PRESUME_WINDOWS_TIME_ZONE_ENVIRONMENT)
+            if (PRESUME_WINDOWS_TIME_ZONE_ENVIRONMENT)
             {
-                if( !tryGetSystemTimeZoneInfo(windowsId, out result, out exception) )
+                if (!tryGetSystemTimeZoneInfo(windowsId, out result, out exception))
                 {
                     Exception ex;
 
@@ -800,9 +800,9 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             }
             else
             {
-                if( !tryGetTzTimeZoneInfoFromWindowsId(windowsId, out result, out exception, preferredTzId) )
+                if (!tryGetTzTimeZoneInfoFromWindowsId(windowsId, out result, out exception, preferredTzId))
                 {
-                    if(exception == null)
+                    if (exception == null)
                     {
                         tryGetSystemTimeZoneInfo(windowsId, out result, out exception);
                     }
@@ -813,11 +813,11 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
                 }
             }
 
-            if(result == null)
+            if (result == null)
             {
                 string message = String.Format(ResourceMessage.ErrorMessages.TimeZoneInfoNotFoundForId, windowsId);
 
-                if(exception != null)
+                if (exception != null)
                 {
                     throw new TimeZoneInfoNotFoundException(message, exception);
                 }
@@ -831,6 +831,127 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         }
 
 
-    }
+        /// <summary>
+        /// Gets <see cref="DateTimeOffset"/> for specified <see cref="DateTime"/> in the specified <see cref="TimeZoneInfo"/>.
+        /// </summary>
+        /// <param name="dateTime"><see cref="DateTime"/> to calculate <see cref="DateTimeOffset"/>.
+        ///   <see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+        ///   Please use UTC based <see cref="DateTime"/> with <see cref="DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+        /// </param>
+        /// <param name="timeZoneInfo"><see cref="TimeZoneInfo"/> to calculate <see cref="DateTimeOffset"/>.</param>
+        /// <returns><see cref="DateTimeOffset"/>.</returns>
+        /// <remarks>
+        ///   <see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+        ///   Please use UTC based <see cref="DateTime"/> with <see cref="DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+        /// </remarks>
+        public static DateTimeOffset GetDateTimeOffset(DateTime dateTime, TimeZoneInfo timeZoneInfo)
+        {
+            if (timeZoneInfo == null)
+            {
+                throw new ArgumentNullException("timeZoneInfo");
+            }
 
+            DateTime dateTimeAdjusted = dateTime;
+            TimeSpan timeSpan = TimeSpan.Zero;
+
+            if (dateTime.Kind != DateTimeKind.Unspecified)
+            {
+                if (dateTime.Kind == DateTimeKind.Utc && !(TimeZoneInfo.Utc.Equals(timeZoneInfo)))
+                {
+                    dateTimeAdjusted = TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Utc, timeZoneInfo);
+                }
+                else if (dateTime.Kind == DateTimeKind.Local && !(TimeZoneInfo.Local.Equals(timeZoneInfo)))
+                {
+                    dateTimeAdjusted = TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Local, timeZoneInfo);
+                }
+            }
+
+            if (!(TimeZoneInfo.Utc.Equals(timeZoneInfo)))
+            {
+                if (dateTime.Kind == DateTimeKind.Utc)
+                {
+                    timeSpan = timeZoneInfo.GetUtcOffset(dateTime);
+                }
+                else
+                {
+                    timeSpan = timeZoneInfo.GetUtcOffset(dateTimeAdjusted);
+                }
+            }
+
+
+            if (dateTimeAdjusted.Kind != DateTimeKind.Unspecified)
+            {
+                dateTimeAdjusted = DateTime.SpecifyKind(dateTimeAdjusted, DateTimeKind.Unspecified);
+            }
+            
+            return new DateTimeOffset(dateTimeAdjusted, timeSpan);
+        }
+
+        /// <summary>
+        /// Gets <see cref="DateTimeOffset"/> for specified <see cref="DateTimeOffset"/> in the specified <see cref="TimeZoneInfo"/>.
+        /// </summary>
+        /// <param name="dateTime"><see cref="DateTime"/> to calculate <see cref="DateTimeOffset"/>.</param>
+        /// <param name="timeZoneInfo"><see cref="TimeZoneInfo"/> to calculate <see cref="DateTimeOffset"/>.</param>
+        /// <returns><see cref="DateTimeOffset"/>.</returns>
+        public static DateTimeOffset GetDateTimeOffset(DateTimeOffset dateTimeOffset, TimeZoneInfo timeZoneInfo)
+        {
+            return GetDateTimeOffset(dateTimeOffset.UtcDateTime, timeZoneInfo);
+        }
+
+
+        public static DateTimeOffset[] GetDateTimeOffsets(DateTime dateTime, TimeZoneInfo timeZoneInfo)
+        {
+            if (timeZoneInfo == null)
+            {
+                throw new ArgumentNullException("timeZoneInfo");
+            }
+
+            if(dateTime.Kind == DateTimeKind.Utc || !(timeZoneInfo.SupportsDaylightSavingTime))
+            {
+                return new DateTimeOffset[] { GetDateTimeOffset(dateTime, timeZoneInfo) };
+            }
+
+            DateTime dateTimeAdjusted = dateTime;
+
+            if (dateTime.Kind == DateTimeKind.Local && !(TimeZoneInfo.Local.Equals(timeZoneInfo)))
+            {
+                dateTimeAdjusted = TimeZoneInfo.ConvertTime(dateTime, TimeZoneInfo.Local, timeZoneInfo);
+            }
+
+            if (dateTimeAdjusted.Kind != DateTimeKind.Unspecified)
+            {
+                dateTimeAdjusted = DateTime.SpecifyKind(dateTimeAdjusted, DateTimeKind.Unspecified);
+            }
+
+            if (TimeZoneInfo.Utc.Equals(timeZoneInfo))
+            {
+                return new DateTimeOffset[] { new DateTimeOffset(dateTimeAdjusted, TimeSpan.Zero) };
+            }
+            else if (!(timeZoneInfo.IsAmbiguousTime(dateTimeAdjusted)))
+            {
+                return new DateTimeOffset[] { new DateTimeOffset(dateTimeAdjusted, timeZoneInfo.GetUtcOffset(dateTimeAdjusted)) };
+            }
+            else
+            {
+                var timeSpans  = timeZoneInfo.GetAmbiguousTimeOffsets(dateTimeAdjusted);
+                var results    = new List<DateTimeOffset>(2);
+                var baseOffset = timeZoneInfo.BaseUtcOffset;
+
+                foreach (var item in timeSpans)
+                {
+                    if(item == baseOffset)
+                    {
+                        results.Insert(0, new DateTimeOffset(dateTimeAdjusted, item));
+                    }
+                    else
+                    {
+                        results.Add(new DateTimeOffset(dateTimeAdjusted, item));
+                    }
+                }
+
+                return results.ToArray();
+            }
+        }
+
+    }
 }

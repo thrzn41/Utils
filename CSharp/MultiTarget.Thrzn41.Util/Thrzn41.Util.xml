@@ -1311,9 +1311,31 @@
             Gets <see cref="T:System.TimeZoneInfo"/> from Windows time zone id.
             </summary>
             <param name="windowsId">tz database id.</param>
-            <param name="preferredTzId">Preferred TzId type.</param>
             <returns><see cref="T:System.TimeZoneInfo"/>.</returns>
             <exception cref="T:Thrzn41.Util.TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetDateTimeOffset(System.DateTime,System.TimeZoneInfo)">
+            <summary>
+            Gets <see cref="T:System.DateTimeOffset"/> for specified <see cref="T:System.DateTime"/> in the specified <see cref="T:System.TimeZoneInfo"/>.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              Please use UTC based <see cref="T:System.DateTime"/> with <see cref="F:System.DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+            </param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <returns><see cref="T:System.DateTimeOffset"/>.</returns>
+            <remarks>
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              Please use UTC based <see cref="T:System.DateTime"/> with <see cref="F:System.DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+            </remarks>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetDateTimeOffset(System.DateTimeOffset,System.TimeZoneInfo)">
+            <summary>
+            Gets <see cref="T:System.DateTimeOffset"/> for specified <see cref="T:System.DateTimeOffset"/> in the specified <see cref="T:System.TimeZoneInfo"/>.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <returns><see cref="T:System.DateTimeOffset"/>.</returns>
         </member>
         <member name="T:Thrzn41.Util.UTF8Utils">
             <summary>
