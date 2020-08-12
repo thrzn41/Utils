@@ -117,34 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BaseSpanLessThanOrEqualsZero" xml:space="preserve">
-    <value>baseSpan is less than or equals 0.</value>
-  </data>
-  <data name="ByteLengthLessThanZero" xml:space="preserve">
-    <value>byteLength is less than 0.</value>
-  </data>
-  <data name="CharLengthLessThanZero" xml:space="preserve">
-    <value>charLength is less than 0.</value>
-  </data>
   <data name="InvalidDateTime" xml:space="preserve">
     <value>The supplied DateTime represents an invalid time.</value>
-  </data>
-  <data name="MaxValueLessThanZero" xml:space="preserve">
-    <value>maxValue is less than 0.</value>
-  </data>
-  <data name="MinDiffLessThanZero" xml:space="preserve">
-    <value>minDiff is less than 0.</value>
-  </data>
-  <data name="MinDiffTooLarge" xml:space="preserve">
-    <value>minDiff is too large.</value>
   </data>
   <data name="TimeZondIdNotFound" xml:space="preserve">
     <value>TimeZone id '{0}' is not found.</value>
   </data>
   <data name="TimeZoneInfoNotFoundForId" xml:space="preserve">
     <value>TimeZoneInfo for id '{0}' is not found.</value>
-  </data>
-  <data name="UriSchemeIsNotHttpsOrHttp" xml:space="preserve">
-    <value>Uri scheme is not https or http.</value>
   </data>
 </root>

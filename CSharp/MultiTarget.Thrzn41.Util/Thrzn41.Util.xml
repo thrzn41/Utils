@@ -167,6 +167,45 @@
             <param name="maxValue">MaxValue to be checked.</param>
             <returns>true if fair, false if not fair.</returns>
         </member>
+        <member name="T:Thrzn41.Util.DateTimeUtils">
+            <summary>
+            Utils for TimeZone.
+            </summary>
+        </member>
+        <member name="T:Thrzn41.Util.DateTimeUtils.NormalizeOption">
+            <summary>
+            Normalize option.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Future">
+            <summary>
+            Normalize datetime to a future date.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Past">
+            <summary>
+            Normalize datetime to a future date.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.DateTimeUtils.Normalize(System.DateTime,System.TimeSpan,System.TimeSpan,Thrzn41.Util.DateTimeUtils.NormalizeOption)">
+            <summary>
+            Normalizes datetime.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/>.</param>
+            <param name="baseSpan"><see cref="T:System.TimeSpan"/> for normalization base.It will be better to use multiples or divisors of 60 secs, 60 mins.</param>
+            <param name="minDiff">The minimal difference between source datetime and normalized datetime.</param>
+            <param name="option"><see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Future"/> for nomalized future date.<see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Past"/> for normalized past date.</param>
+            <returns>Normalized <see cref="T:System.DateTime"/>.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.DateTimeUtils.Normalize(System.DateTime,System.TimeSpan,Thrzn41.Util.DateTimeUtils.NormalizeOption)">
+            <summary>
+            Normalizes datetime.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/>.</param>
+            <param name="baseSpan"><see cref="T:System.TimeSpan"/> for normalization base.It will be better to use multiples or divisors of 60 secs, 60 mins.</param>
+            <param name="option"><see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Future"/> for nomalized future date.<see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Past"/> for normalized past date.</param>
+            <returns>Normalized <see cref="T:System.DateTime"/>.</returns>
+        </member>
         <member name="T:Thrzn41.Util.HashString">
             <summary>
             Provides feature for Hash string.
@@ -773,6 +812,11 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.BaseSpanLessThanOrEqualsZero">
+            <summary>
+              Looks up a localized string similar to baseSpan is less than or equals 0..
+            </summary>
+        </member>
         <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.ByteLengthLessThanZero">
             <summary>
               Looks up a localized string similar to byteLength is less than 0..
@@ -783,9 +827,34 @@
               Looks up a localized string similar to charLength is less than 0..
             </summary>
         </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.InvalidDateTime">
+            <summary>
+              Looks up a localized string similar to The supplied DateTime represents an invalid time..
+            </summary>
+        </member>
         <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.MaxValueLessThanZero">
             <summary>
               Looks up a localized string similar to maxValue is less than 0..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.MinDiffLessThanZero">
+            <summary>
+              Looks up a localized string similar to minDiff is less than 0..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.MinDiffTooLarge">
+            <summary>
+              Looks up a localized string similar to minDiff is too large..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.TimeZondIdNotFound">
+            <summary>
+              Looks up a localized string similar to TimeZone id &apos;{0}&apos; is not found..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.TimeZoneInfoNotFoundForId">
+            <summary>
+              Looks up a localized string similar to TimeZoneInfo for id &apos;{0}&apos; is not found..
             </summary>
         </member>
         <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.UriSchemeIsNotHttpsOrHttp">
@@ -1015,6 +1084,342 @@
             <summary>
             Dispose.
             </summary>
+        </member>
+        <member name="T:Thrzn41.Util.TimeZoneInfoNotFoundException">
+            <summary>
+            The exception that is thrown when a time zone id cannot be found.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneInfoNotFoundException.#ctor(System.String)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="message">message.</param>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneInfoNotFoundException.#ctor(System.String,System.Exception)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="message">message.</param>
+            <param name="innerException">Inner exception.</param>
+        </member>
+        <member name="T:Thrzn41.Util.TimeZoneUtils">
+            <summary>
+            Utils for TimeZone.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.WINDOWS_ID_VERSION_TAG">
+            <summary>
+            Windows Id Version Tag.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.TZ_ID_VERSION_TAG">
+            <summary>
+            TzId Version Tag.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.EMPTY_MAP">
+            <summary>
+            Empty map.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.TimeZoneUtils.WindowsIdVersionTag">
+            <summary>
+            Windows Id Version Tag.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.TimeZoneUtils.TzIdVersionTag">
+            <summary>
+            TzId Version Tag.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.LAZY_WINDOWS_ID_TO_TZ_ID_MAP">
+            <summary>
+            WindowsId to TzId map(Lazy Load).
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.LAZY_TZ_ID_TO_WINDOWS_ID_MAP">
+            <summary>
+            TzId to WindowsId map(Lazy Load).
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.LAZY_WINDOWS_ID_TO_TZ_ID_TERRITORY_INDIPENDENT_MAP">
+            <summary>
+            WindowsId to TzId map(Lazy Load).
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.TimeZoneUtils.WINDOWS_ID_TO_TZ_ID_MAP">
+            <summary>
+            WindowsId to TzId map.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.TimeZoneUtils.TZ_ID_TO_WINDOWS_ID_MAP">
+            <summary>
+            TzId to WindowsId map.
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.TimeZoneUtils.WINDOWS_ID_TO_TZ_ID_TERRITORY_INDIPENDENT_MAP">
+            <summary>
+            WindowsId to TzId map.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.PRESUME_WINDOWS_TIME_ZONE_ENVIRONMENT">
+            <summary>
+            Presume this environmet has windows time zone.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.LOCK">
+            <summary>
+            Slim Lock.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.INIT_COUNT">
+            <summary>
+            Init counter.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.TIME_ZONE_ID_DATABASE">
+            <summary>
+            TimeZone id database to reduce reference count.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryAddToDictionary(System.Collections.Generic.Dictionary{System.String,System.String},System.String,System.String)">
+            <summary>
+            Try add to TimeZone Id map.
+            </summary>
+            <param name="dictionary">Target map.</param>
+            <param name="key">The key.</param>
+            <param name="value">The value for the key.</param>
+            <returns>true if the key, value paire added to the map.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.loadTimeZoneIdMap(System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>
+            Load TimeZone Id map from resource.
+            </summary>
+            <param name="timeZoneIdMap">TimeZone id map to be loaded.</param>
+            <param name="resourceName">Source resource of the map.</param>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.loadWindowsIdToTzIdMap">
+            <summary>
+            Loads WindowsId to TzId TimeZone map.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.loadTzIdToWindowsIdMap">
+            <summary>
+            Loads TzId to WindowsId TimeZone map.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.loadWindowsIdToTzIdMap2">
+            <summary>
+            Loads WindowsId to TzId TimeZone map.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Thrzn41.Util.TimeZoneUtils.PreferredTzId">
+            <summary>
+            Preferred TzId.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.PreferredTzId.Default">
+            <summary>
+            Default.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.TimeZoneUtils.PreferredTzId.TerritoryIndipendent">
+            <summary>
+            Territory Indipendent TzId preferred.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryGetTzIdFromWindowsId(System.String,System.String@,Thrzn41.Util.TimeZoneUtils.PreferredTzId)">
+            <summary>
+            Gets the tz database id corresponds to a Windows time zone id.
+            </summary>
+            <param name="windowsId">Windows time zone id.</param>
+            <param name="tzId">tz database id corresponds to the Windows time zone id.</param>
+            <param name="preferredTzId">Preferred TzId type.</param>
+            <returns>true if the tz database id is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetTzIdFromWindowsId(System.String,Thrzn41.Util.TimeZoneUtils.PreferredTzId)">
+            <summary>
+            Gets the tz database id corresponds to a Windows time zone id.
+            </summary>
+            <param name="windowsId">Windows time zone id.</param>
+            <param name="preferredTzId">Preferred TzId type.</param>
+            <returns>tz database id corresponds to the Windows time zone id.</returns>
+            <exception cref="T:Thrzn41.Util.TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryGetTzIdsFromWindowsId(System.String,System.String[]@)">
+            <summary>
+            Gets the tz database id list corresponds to a Windows time zone id.
+            </summary>
+            <param name="windowsId">Windows time zone id.</param>
+            <param name="tzIds">tz database id corresponds to the Windows time zone id.</param>
+            <returns>true if the tz database id is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetTzIdsFromWindowsId(System.String)">
+            <summary>
+            Gets the tz database id list corresponds to a Windows time zone id.
+            </summary>
+            <param name="windowsId">Windows time zone id.</param>
+            <returns>tz database id corresponds to the Windows time zone id.</returns>
+            <exception cref="T:Thrzn41.Util.TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryGetWindowsIdFromTzId(System.String,System.String@)">
+            <summary>
+            Gets the Windows time zone id corresponds to a tz database id. 
+            </summary>
+            <param name="tzId">tz database id.</param>
+            <param name="windowsId">Windows time zone id corresponds to the tz database id.</param>
+            <returns>true if the Windows time zone id is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetWindowsIdFromTzId(System.String)">
+            <summary>
+            Gets the Windows time zone id corresponds to a tz database id.  
+            </summary>
+            <param name="tzId">tz database id.</param>
+            <returns>Windows time zone id corresponds to the tz database id.</returns>
+            <exception cref="T:Thrzn41.Util.TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryGetTzIdFromTimeZoneInfo(System.TimeZoneInfo,System.String@,Thrzn41.Util.TimeZoneUtils.PreferredTzId)">
+            <summary>
+            Gets the tz database id from <see cref="T:System.TimeZoneInfo"/>. 
+            </summary>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <param name="tzId">tz database id corresponds to the Windows time zone id.</param>
+            <param name="preferredTzId">Preferred TzId type.</param>
+            <returns>true if the tz database id is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetTzIdFromTimeZoneInfo(System.TimeZoneInfo,Thrzn41.Util.TimeZoneUtils.PreferredTzId)">
+            <summary>
+            Gets the tz database id from <see cref="T:System.TimeZoneInfo"/>. 
+            </summary>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <param name="preferredTzId">Preferred TzId type.</param>
+            <returns>tz database id corresponds to the Windows time zone id.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryGetWindowsIdFromTimeZoneInfo(System.TimeZoneInfo,System.String@)">
+            <summary>
+            Gets the Windows time zone id corresponds to a tz database id. 
+            </summary>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <param name="windowsId">Windows time zone id corresponds to the tz database id.</param>
+            <returns>true if the Windows time zone id is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetWindowsIdFromTimeZoneInfo(System.TimeZoneInfo)">
+            <summary>
+            Gets the Windows time zone id corresponds to a tz database id. 
+            </summary>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <returns>Windows time zone id corresponds to the tz database id.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.tryGetSystemTimeZoneInfo(System.String,System.TimeZoneInfo@,System.Exception@)">
+            <summary>
+            Gets System TimeZoneInfo.
+            </summary>
+            <param name="id">The time zone id.</param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <param name="exception"><see cref="T:System.Exception"/> which was thrown while finding TimeZone.</param>
+            <returns>true if the <see cref="T:System.TimeZoneInfo"/> is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.tryGetSystemTimeZoneInfo(System.String,System.TimeZoneInfo@)">
+            <summary>
+            Gets System TimeZoneInfo.
+            </summary>
+            <param name="id">The time zone id.</param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <returns>true if the <see cref="T:System.TimeZoneInfo"/> is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.tryGetTzTimeZoneInfoFromWindowsId(System.String,System.TimeZoneInfo@,System.Exception@,Thrzn41.Util.TimeZoneUtils.PreferredTzId)">
+            <summary>
+            Gets System TimeZoneInfo which has Tz database id.
+            </summary>
+            <param name="windowsId"></param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <param name="exception"><see cref="T:System.Exception"/> which was thrown while finding TimeZone.</param>
+            <param name="preferredTzId">Preferred TzId type.</param>
+            <returns>true if the <see cref="T:System.TimeZoneInfo"/> is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryGetTimeZoneInfoFromTzId(System.String,System.TimeZoneInfo@)">
+            <summary>
+            Gets <see cref="T:System.TimeZoneInfo"/> from tz database id.
+            </summary>
+            <param name="tzId">tz database id.</param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <returns>true if the <see cref="T:System.TimeZoneInfo"/> is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetTimeZoneInfoFromTzId(System.String)">
+            <summary>
+            Gets <see cref="T:System.TimeZoneInfo"/> from tz database id.
+            </summary>
+            <param name="tzId">tz database id.</param>
+            <returns><see cref="T:System.TimeZoneInfo"/>.</returns>
+            <exception cref="T:Thrzn41.Util.TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.TryGetTimeZoneInfoFromWindowsId(System.String,System.TimeZoneInfo@)">
+            <summary>
+            Gets <see cref="T:System.TimeZoneInfo"/> from tz database id.
+            </summary>
+            <param name="windowsId">tz database id.</param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/>.</param>
+            <returns>true if the <see cref="T:System.TimeZoneInfo"/> is found, otherwise false.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetTimeZoneInfoFromWindowsId(System.String,Thrzn41.Util.TimeZoneUtils.PreferredTzId)">
+            <summary>
+            Gets <see cref="T:System.TimeZoneInfo"/> from Windows time zone id.
+            </summary>
+            <param name="windowsId">tz database id.</param>
+            <param name="preferredTzId">Preferred TzId type.</param>
+            <returns><see cref="T:System.TimeZoneInfo"/>.</returns>
+            <exception cref="T:Thrzn41.Util.TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetDateTimeOffset(System.DateTime,System.TimeZoneInfo)">
+            <summary>
+            Gets <see cref="T:System.DateTimeOffset"/> for specified <see cref="T:System.DateTime"/> in the specified <see cref="T:System.TimeZoneInfo"/>.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              Please use UTC based <see cref="T:System.DateTime"/> with <see cref="F:System.DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+            </param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <returns><see cref="T:System.DateTimeOffset"/>.</returns>
+            <remarks>
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              Please use UTC based <see cref="T:System.DateTime"/> with <see cref="F:System.DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+            </remarks>
+            <exception cref="T:System.ArgumentException">The dateTime parameter represents an invalid time.</exception>
+            <exception cref="T:System.ArgumentNullException">The timeZoneInfo parameter is null.</exception>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetDateTimeOffset(System.DateTimeOffset,System.TimeZoneInfo)">
+            <summary>
+            Gets <see cref="T:System.DateTimeOffset"/> for specified <see cref="T:System.DateTimeOffset"/> in the specified <see cref="T:System.TimeZoneInfo"/>.
+            </summary>
+            <param name="dateTimeOffset"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <returns><see cref="T:System.DateTimeOffset"/>.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetDateTimeOffsets(System.DateTime,System.TimeZoneInfo)">
+            <summary>
+            Gets <see cref="T:System.DateTimeOffset"/> list for specified <see cref="T:System.DateTimeOffset"/> in the specified <see cref="T:System.TimeZoneInfo"/>.
+            If the result contains two DateTimeOffsets, the index-1 contains standard time.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              For <see cref="F:System.DateTimeKind.Utc"/>, only one <see cref="T:System.DateTimeOffset"/> is in the returned list.
+              For <see cref="F:System.DateTimeKind.Unspecified"/> or <see cref="F:System.DateTimeKind.Local"/>, there is a case that two <see cref="T:System.DateTimeOffset"/> items are returned when the datetime is ambiguous.
+              For <see cref="F:System.DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.
+            </param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <returns><see cref="T:System.DateTimeOffset"/>.</returns>
+            <remarks>
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              For <see cref="F:System.DateTimeKind.Utc"/>, only one <see cref="T:System.DateTimeOffset"/> is in the returned list.
+              For <see cref="F:System.DateTimeKind.Unspecified"/> or <see cref="F:System.DateTimeKind.Local"/>, there is a case that two <see cref="T:System.DateTimeOffset"/> items are returned when the datetime is ambiguous.
+              For <see cref="F:System.DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.
+            </remarks>
+            <exception cref="T:System.ArgumentException">The dateTime parameter represents an invalid time.</exception>
+            <exception cref="T:System.ArgumentNullException">The timeZoneInfo parameter is null.</exception>
         </member>
         <member name="T:Thrzn41.Util.UTF8Utils">
             <summary>

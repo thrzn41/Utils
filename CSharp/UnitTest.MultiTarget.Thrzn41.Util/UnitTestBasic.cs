@@ -7,11 +7,70 @@ using System.Threading;
 using System.Threading.Tasks;
 using Thrzn41.Util;
 
-namespace UnitTest.DotNetCore.Thrzn41.Util
+namespace UnitTest.MultiTarget.Thrzn41.Util
 {
     [TestClass]
     public class UnitTestBasic
     {
+
+        private const string DATE_TIME_FORMATE = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffK";
+
+        [TestMethod]
+        public void TestDateTimeNormalize()
+        {
+            DateTime dateTime;
+            DateTime result;
+
+            dateTime = new DateTime(2021, 01, 01, 15, 12, 11, 0123);
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f));
+            Assert.AreEqual("2021-01-01T15:15:00.000", result.ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 01, 01, 15, 12, 11, 0123, DateTimeKind.Utc);
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f));
+            Assert.AreEqual("2021-01-01T15:15:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), DateTimeUtils.NormalizeOption.Past);
+            Assert.AreEqual("2021-01-01T15:10:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(30.0f));
+            Assert.AreEqual("2021-01-01T15:30:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(30.0f), DateTimeUtils.NormalizeOption.Past);
+            Assert.AreEqual("2021-01-01T15:00:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.FromMinutes(3.0f));
+            Assert.AreEqual("2021-01-01T15:20:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.FromMinutes(3.0f), DateTimeUtils.NormalizeOption.Past);
+            Assert.AreEqual("2021-01-01T15:05:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(-0.0f));
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(-1.0f));
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.FromMinutes(-1.0f));
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.MaxValue);
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.MaxValue, DateTimeUtils.NormalizeOption.Past);
+            });
+
+
+        }
 
         [TestMethod]
         public void TestLocalProtectedString()
@@ -1911,7 +1970,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                     {
                         threadId0 = Thread.CurrentThread.ManagedThreadId;
 
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
                     }
@@ -1932,7 +1991,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -1946,7 +2006,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                 var t0 = slimAsyncLock.ExecuteInLockAsync(
                     async () =>
                     {
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
 
@@ -1969,7 +2029,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(t0.Result, t1.Result);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(t0.Result, t1.Result);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -1990,7 +2051,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                         using (await slimAsyncLock.EnterLockedAsyncBlockAsync())
                         {
-                            await Task.Delay(500);
+                            await Task.Delay(250);
 
                             list.Add(0);
                         }
@@ -2013,7 +2074,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -2039,7 +2101,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                     {
                         threadId0 = Thread.CurrentThread.ManagedThreadId;
 
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
                     }
@@ -2060,7 +2122,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -2074,7 +2137,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
                 var t0 = slimAsyncLock.ExecuteInLockAsync(
                     async () =>
                     {
-                        await Task.Delay(500);
+                        await Task.Delay(250);
 
                         list.Add(0);
 
@@ -2097,7 +2160,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(t0.Result, t1.Result);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(t0.Result, t1.Result);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
@@ -2118,7 +2182,7 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                         using (await slimAsyncLock.EnterLockedAsyncBlockAsync())
                         {
-                            await Task.Delay(500);
+                            await Task.Delay(250);
 
                             list.Add(0);
                         }
@@ -2141,7 +2205,8 @@ namespace UnitTest.DotNetCore.Thrzn41.Util
 
                 Task.WaitAll(new Task[] { t0, t1 });
 
-                Assert.AreNotEqual(threadId0, threadId1);
+                // ThreadId may the same in this case because after awaiting semaphore.
+                //Assert.AreNotEqual(threadId0, threadId1);
                 Assert.AreEqual(0, list[0]);
                 Assert.AreEqual(1, list[1]);
 
