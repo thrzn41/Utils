@@ -167,6 +167,45 @@
             <param name="maxValue">MaxValue to be checked.</param>
             <returns>true if fair, false if not fair.</returns>
         </member>
+        <member name="T:Thrzn41.Util.DateTimeUtils">
+            <summary>
+            Utils for TimeZone.
+            </summary>
+        </member>
+        <member name="T:Thrzn41.Util.DateTimeUtils.NormalizeOption">
+            <summary>
+            Normalize option.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Future">
+            <summary>
+            Normalize datetime to a future date.
+            </summary>
+        </member>
+        <member name="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Past">
+            <summary>
+            Normalize datetime to a future date.
+            </summary>
+        </member>
+        <member name="M:Thrzn41.Util.DateTimeUtils.Normalize(System.DateTime,System.TimeSpan,System.TimeSpan,Thrzn41.Util.DateTimeUtils.NormalizeOption)">
+            <summary>
+            Normalizes datetime.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/>.</param>
+            <param name="baseSpan"><see cref="T:System.TimeSpan"/> for normalization base.It will be better to use multiples or divisors of 60 secs, 60 mins.</param>
+            <param name="minDiff">The minimal difference between source datetime and normalized datetime.</param>
+            <param name="option"><see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Future"/> for nomalized future date.<see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Past"/> for normalized past date.</param>
+            <returns>Normalized <see cref="T:System.DateTime"/>.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.DateTimeUtils.Normalize(System.DateTime,System.TimeSpan,Thrzn41.Util.DateTimeUtils.NormalizeOption)">
+            <summary>
+            Normalizes datetime.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/>.</param>
+            <param name="baseSpan"><see cref="T:System.TimeSpan"/> for normalization base.It will be better to use multiples or divisors of 60 secs, 60 mins.</param>
+            <param name="option"><see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Future"/> for nomalized future date.<see cref="F:Thrzn41.Util.DateTimeUtils.NormalizeOption.Past"/> for normalized past date.</param>
+            <returns>Normalized <see cref="T:System.DateTime"/>.</returns>
+        </member>
         <member name="T:Thrzn41.Util.HashString">
             <summary>
             Provides feature for Hash string.
@@ -773,6 +812,11 @@
               resource lookups using this strongly typed resource class.
             </summary>
         </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.BaseSpanLessThanOrEqualsZero">
+            <summary>
+              Looks up a localized string similar to baseSpan is less than or equals 0..
+            </summary>
+        </member>
         <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.ByteLengthLessThanZero">
             <summary>
               Looks up a localized string similar to byteLength is less than 0..
@@ -783,9 +827,24 @@
               Looks up a localized string similar to charLength is less than 0..
             </summary>
         </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.InvalidDateTime">
+            <summary>
+              Looks up a localized string similar to The supplied DateTime represents an invalid time..
+            </summary>
+        </member>
         <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.MaxValueLessThanZero">
             <summary>
               Looks up a localized string similar to maxValue is less than 0..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.MinDiffLessThanZero">
+            <summary>
+              Looks up a localized string similar to minDiff is less than 0..
+            </summary>
+        </member>
+        <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.MinDiffTooLarge">
+            <summary>
+              Looks up a localized string similar to minDiff is too large..
             </summary>
         </member>
         <member name="P:Thrzn41.Util.ResourceMessage.ErrorMessages.TimeZondIdNotFound">
@@ -1311,6 +1370,7 @@
             Gets <see cref="T:System.TimeZoneInfo"/> from Windows time zone id.
             </summary>
             <param name="windowsId">tz database id.</param>
+            <param name="preferredTzId">Preferred TzId type.</param>
             <returns><see cref="T:System.TimeZoneInfo"/>.</returns>
             <exception cref="T:Thrzn41.Util.TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
         </member>
@@ -1328,14 +1388,38 @@
               <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
               Please use UTC based <see cref="T:System.DateTime"/> with <see cref="F:System.DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
             </remarks>
+            <exception cref="T:System.ArgumentException">The dateTime parameter represents an invalid time.</exception>
+            <exception cref="T:System.ArgumentNullException">The timeZoneInfo parameter is null.</exception>
         </member>
         <member name="M:Thrzn41.Util.TimeZoneUtils.GetDateTimeOffset(System.DateTimeOffset,System.TimeZoneInfo)">
             <summary>
             Gets <see cref="T:System.DateTimeOffset"/> for specified <see cref="T:System.DateTimeOffset"/> in the specified <see cref="T:System.TimeZoneInfo"/>.
             </summary>
-            <param name="dateTime"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <param name="dateTimeOffset"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
             <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
             <returns><see cref="T:System.DateTimeOffset"/>.</returns>
+        </member>
+        <member name="M:Thrzn41.Util.TimeZoneUtils.GetDateTimeOffsets(System.DateTime,System.TimeZoneInfo)">
+            <summary>
+            Gets <see cref="T:System.DateTimeOffset"/> list for specified <see cref="T:System.DateTimeOffset"/> in the specified <see cref="T:System.TimeZoneInfo"/>.
+            If the result contains two DateTimeOffsets, the index-1 contains standard time.
+            </summary>
+            <param name="dateTime"><see cref="T:System.DateTime"/> to calculate <see cref="T:System.DateTimeOffset"/>.
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              For <see cref="F:System.DateTimeKind.Utc"/>, only one <see cref="T:System.DateTimeOffset"/> is in the returned list.
+              For <see cref="F:System.DateTimeKind.Unspecified"/> or <see cref="F:System.DateTimeKind.Local"/>, there is a case that two <see cref="T:System.DateTimeOffset"/> items are returned when the datetime is ambiguous.
+              For <see cref="F:System.DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.
+            </param>
+            <param name="timeZoneInfo"><see cref="T:System.TimeZoneInfo"/> to calculate <see cref="T:System.DateTimeOffset"/>.</param>
+            <returns><see cref="T:System.DateTimeOffset"/>.</returns>
+            <remarks>
+              <see cref="T:System.DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
+              For <see cref="F:System.DateTimeKind.Utc"/>, only one <see cref="T:System.DateTimeOffset"/> is in the returned list.
+              For <see cref="F:System.DateTimeKind.Unspecified"/> or <see cref="F:System.DateTimeKind.Local"/>, there is a case that two <see cref="T:System.DateTimeOffset"/> items are returned when the datetime is ambiguous.
+              For <see cref="F:System.DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.
+            </remarks>
+            <exception cref="T:System.ArgumentException">The dateTime parameter represents an invalid time.</exception>
+            <exception cref="T:System.ArgumentNullException">The timeZoneInfo parameter is null.</exception>
         </member>
         <member name="T:Thrzn41.Util.UTF8Utils">
             <summary>

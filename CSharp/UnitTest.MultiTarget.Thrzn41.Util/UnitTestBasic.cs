@@ -13,6 +13,65 @@ namespace UnitTest.MultiTarget.Thrzn41.Util
     public class UnitTestBasic
     {
 
+        private const string DATE_TIME_FORMATE = "yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffK";
+
+        [TestMethod]
+        public void TestDateTimeNormalize()
+        {
+            DateTime dateTime;
+            DateTime result;
+
+            dateTime = new DateTime(2021, 01, 01, 15, 12, 11, 0123);
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f));
+            Assert.AreEqual("2021-01-01T15:15:00.000", result.ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 01, 01, 15, 12, 11, 0123, DateTimeKind.Utc);
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f));
+            Assert.AreEqual("2021-01-01T15:15:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), DateTimeUtils.NormalizeOption.Past);
+            Assert.AreEqual("2021-01-01T15:10:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(30.0f));
+            Assert.AreEqual("2021-01-01T15:30:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(30.0f), DateTimeUtils.NormalizeOption.Past);
+            Assert.AreEqual("2021-01-01T15:00:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.FromMinutes(3.0f));
+            Assert.AreEqual("2021-01-01T15:20:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.FromMinutes(3.0f), DateTimeUtils.NormalizeOption.Past);
+            Assert.AreEqual("2021-01-01T15:05:00.000Z", result.ToString(DATE_TIME_FORMATE));
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(-0.0f));
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(-1.0f));
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.FromMinutes(-1.0f));
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.MaxValue);
+            });
+
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>
+            {
+                result = DateTimeUtils.Normalize(dateTime, TimeSpan.FromMinutes(5.0f), TimeSpan.MaxValue, DateTimeUtils.NormalizeOption.Past);
+            });
+
+
+        }
+
         [TestMethod]
         public void TestLocalProtectedString()
         {

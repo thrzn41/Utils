@@ -309,6 +309,12 @@ namespace UnitTest.MultiTarget.Thrzn41.Util
             dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffset(dateTime, timeZoneInfo);
             Assert.AreEqual("2021-03-14T01:59:59.000-08:00", dateTimeOffsetResult.ToString(DATE_TIME_FORMATE));
 
+            dateTime = new DateTime(2021, 03, 14, 02, 00, 00);
+            Assert.ThrowsException<ArgumentException>(() =>
+            {
+                dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffset(dateTime, timeZoneInfo);
+            });
+
             dateTime = new DateTime(2021, 03, 14, 03, 00, 00);
             dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffset(dateTime, timeZoneInfo);
             Assert.AreEqual("2021-03-14T03:00:00.000-07:00", dateTimeOffsetResult.ToString(DATE_TIME_FORMATE));
@@ -387,7 +393,100 @@ namespace UnitTest.MultiTarget.Thrzn41.Util
             dateTimeOffset = new DateTimeOffset(2021, 11, 07, 01, 00, 00, TimeSpan.FromHours(-8.0f));
             dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffset(dateTimeOffset, timeZoneInfo);
             Assert.AreEqual("2021-11-07T01:00:00.000-08:00", dateTimeOffsetResult.ToString(DATE_TIME_FORMATE));
+
+
+            Assert.ThrowsException<ArgumentNullException>(() =>
+            {
+                dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffset(dateTime, null);
+            });
+
+            Assert.ThrowsException<ArgumentNullException>(() =>
+            {
+                dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffset(dateTimeOffset, null);
+            });
+
         }
 
+
+        [TestMethod]
+        public void TestGetDateTimeOffsets()
+        {
+            DateTime dateTime;
+            DateTimeOffset[] dateTimeOffsetResult;
+            TimeZoneInfo timeZoneInfo;
+
+            timeZoneInfo = TimeZoneUtils.GetTimeZoneInfoFromTzId("Asia/Tokyo");
+
+            dateTime = new DateTime(2021, 01, 01, 00, 00, 00);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-01-01T00:00:00.000+09:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 01, 01, 00, 00, 00, DateTimeKind.Utc);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-01-01T09:00:00.000+09:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+
+
+
+            timeZoneInfo = TimeZoneUtils.GetTimeZoneInfoFromTzId("America/Los_Angeles");
+
+            dateTime = new DateTime(2021, 01, 01, 00, 00, 00);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-01-01T00:00:00.000-08:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 03, 14, 01, 59, 59);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-03-14T01:59:59.000-08:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 03, 14, 02, 00, 00);
+            Assert.ThrowsException<ArgumentException>(() =>
+            {
+                dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            });
+
+
+            dateTime = new DateTime(2021, 11, 07, 00, 59, 59);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-11-07T00:59:59.000-07:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 11, 07, 01, 59, 59);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(2, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-11-07T01:59:59.000-08:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+            Assert.AreEqual("2021-11-07T01:59:59.000-07:00", dateTimeOffsetResult[1].ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 11, 07, 02, 00, 00);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-11-07T02:00:00.000-08:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+
+            dateTime = new DateTime(2021, 11, 07, 08, 00, 00, DateTimeKind.Utc);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-11-07T01:00:00.000-07:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 11, 07, 08, 59, 59, DateTimeKind.Utc);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-11-07T01:59:59.000-07:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+            dateTime = new DateTime(2021, 11, 07, 09, 00, 00, DateTimeKind.Utc);
+            dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, timeZoneInfo);
+            Assert.AreEqual(1, dateTimeOffsetResult.Length);
+            Assert.AreEqual("2021-11-07T01:00:00.000-08:00", dateTimeOffsetResult[0].ToString(DATE_TIME_FORMATE));
+
+
+
+            Assert.ThrowsException<ArgumentNullException>(() =>
+            {
+                dateTimeOffsetResult = TimeZoneUtils.GetDateTimeOffsets(dateTime, null);
+            });
+        }
     }
 }

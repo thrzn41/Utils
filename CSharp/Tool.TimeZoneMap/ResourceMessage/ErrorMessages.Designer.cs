@@ -61,6 +61,15 @@ namespace Tool.TimeZoneMap.ResourceMessage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The supplied DateTime represents an invalid time..
+        /// </summary>
+        internal static string InvalidDateTime {
+            get {
+                return ResourceManager.GetString("InvalidDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TimeZone id &apos;{0}&apos; is not found..
         /// </summary>
         internal static string TimeZondIdNotFound {

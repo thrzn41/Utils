@@ -62,6 +62,15 @@ namespace Thrzn41.Util.ResourceMessage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to baseSpan is less than or equals 0..
+        /// </summary>
+        internal static string BaseSpanLessThanOrEqualsZero {
+            get {
+                return ResourceManager.GetString("BaseSpanLessThanOrEqualsZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to byteLength is less than 0..
         /// </summary>
         internal static string ByteLengthLessThanZero {
@@ -80,11 +89,38 @@ namespace Thrzn41.Util.ResourceMessage {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The supplied DateTime represents an invalid time..
+        /// </summary>
+        internal static string InvalidDateTime {
+            get {
+                return ResourceManager.GetString("InvalidDateTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to maxValue is less than 0..
         /// </summary>
         internal static string MaxValueLessThanZero {
             get {
                 return ResourceManager.GetString("MaxValueLessThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minDiff is less than 0..
+        /// </summary>
+        internal static string MinDiffLessThanZero {
+            get {
+                return ResourceManager.GetString("MinDiffLessThanZero", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to minDiff is too large..
+        /// </summary>
+        internal static string MinDiffTooLarge {
+            get {
+                return ResourceManager.GetString("MinDiffTooLarge", resourceCulture);
             }
         }
         
