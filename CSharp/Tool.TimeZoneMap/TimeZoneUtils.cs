@@ -207,11 +207,11 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <param name="resourceName">Source resource of the map.</param>
         private static void loadTimeZoneIdMap(Dictionary<string, string> timeZoneIdMap, string resourceName)
         {
-            using (var lockW = LOCK.EnterLockedWriteBlock())
+            using (var lockW  = LOCK.EnterLockedWriteBlock())
             using (var stream = (typeof(TimeZoneUtils)).GetTypeInfo().Assembly.GetManifestResourceStream(resourceName))
             using (var reader = new StreamReader(stream, UTF8Utils.UTF8_WITHOUT_BOM))
             {
-                int index;
+                int    index;
                 string line, src, dest, rsrc, rdest;
 
                 if (TIME_ZONE_ID_DATABASE == null)
@@ -339,7 +339,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// Loads WindowsId to TzId TimeZone map.
         /// </summary>
         /// <returns></returns>
-        private static ReadOnlyDictionary<string, string> loadWindowsIdToTzIdMap2()
+        private static ReadOnlyDictionary<string, string> loadWindowsIdToTzIdTerritoryIndipendentMap()
         {
             try
             {
@@ -372,7 +372,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             LAZY_WINDOWS_ID_TO_TZ_ID_MAP = new Lazy<ReadOnlyDictionary<string, string>>(loadWindowsIdToTzIdMap, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
             LAZY_TZ_ID_TO_WINDOWS_ID_MAP = new Lazy<ReadOnlyDictionary<string, string>>(loadTzIdToWindowsIdMap, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 
-            LAZY_WINDOWS_ID_TO_TZ_ID_TERRITORY_INDIPENDENT_MAP = new Lazy<ReadOnlyDictionary<string, string>>(loadWindowsIdToTzIdMap2, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
+            LAZY_WINDOWS_ID_TO_TZ_ID_TERRITORY_INDIPENDENT_MAP = new Lazy<ReadOnlyDictionary<string, string>>(loadWindowsIdToTzIdTerritoryIndipendentMap, System.Threading.LazyThreadSafetyMode.ExecutionAndPublication);
 #else
             WINDOWS_ID_TO_TZ_ID_MAP = loadWindowsIdToTzIdMap();
             TZ_ID_TO_WINDOWS_ID_MAP = loadTzIdToWindowsIdMap();
@@ -609,14 +609,14 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             try
             {
                 timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(id);
-                exception = null;
+                exception    = null;
 
                 return true;
             }
             catch (Exception ex)
             {
                 timeZoneInfo = null;
-                exception = ex;
+                exception    = ex;
             }
 
             return false;
@@ -646,7 +646,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         private static bool tryGetTzTimeZoneInfoFromWindowsId(string windowsId, out TimeZoneInfo timeZoneInfo, out Exception exception, PreferredTzId preferredTzId = PreferredTzId.Default)
         {
             TimeZoneInfo tzi = null;
-            Exception ex = null;
+            Exception    ex  = null;
 
             string id;
 
@@ -664,7 +664,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
             }
 
             timeZoneInfo = tzi;
-            exception = ex;
+            exception    = ex;
 
             if (timeZoneInfo == null)
             {
@@ -705,8 +705,8 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <exception cref="TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
         public static TimeZoneInfo GetTimeZoneInfoFromTzId(string tzId)
         {
-            TimeZoneInfo result = null;
-            Exception exception = null;
+            TimeZoneInfo result    = null;
+            Exception    exception = null;
 
             if (PRESUME_WINDOWS_TIME_ZONE_ENVIRONMENT)
             {
@@ -784,7 +784,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         public static TimeZoneInfo GetTimeZoneInfoFromWindowsId(string windowsId, PreferredTzId preferredTzId = PreferredTzId.Default)
         {
             TimeZoneInfo result;
-            Exception exception;
+            Exception    exception;
 
             if (PRESUME_WINDOWS_TIME_ZONE_ENVIRONMENT)
             {
