@@ -779,6 +779,7 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// Gets <see cref="TimeZoneInfo"/> from Windows time zone id.
         /// </summary>
         /// <param name="windowsId">tz database id.</param>
+        /// <param name="preferredTzId">Preferred TzId type.</param>
         /// <returns><see cref="TimeZoneInfo"/>.</returns>
         /// <exception cref="TimeZoneInfoNotFoundException">Thrown if the time zone id is not found.</exception>
         public static TimeZoneInfo GetTimeZoneInfoFromWindowsId(string windowsId, PreferredTzId preferredTzId = PreferredTzId.Default)
@@ -831,15 +832,16 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
         /// <summary>
         /// Gets <see cref="DateTimeOffset"/> for specified <see cref="DateTime"/> in the specified <see cref="TimeZoneInfo"/>.
         /// </summary>
-        /// <param name="dateTime"><see cref="DateTime"/> to calculate <see cref="DateTimeOffset"/>.
-        ///   <see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
-        ///   Please use UTC based <see cref="DateTime"/> with <see cref="DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+        /// <param name="dateTime">
+        ///   <para><see cref="DateTime"/> to calculate <see cref="DateTimeOffset"/>.</para>
+        ///   <para><see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).</para>
+        ///   <para>Please use UTC based <see cref="DateTime"/> with <see cref="DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.</para>
         /// </param>
         /// <param name="timeZoneInfo"><see cref="TimeZoneInfo"/> to calculate <see cref="DateTimeOffset"/>.</param>
         /// <returns><see cref="DateTimeOffset"/>.</returns>
         /// <remarks>
-        ///   <see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
-        ///   Please use UTC based <see cref="DateTime"/> with <see cref="DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.
+        ///   <para><see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).</para>
+        ///   <para>Please use UTC based <see cref="DateTime"/> with <see cref="DateTimeKind.Utc"/> if you want to get a certain datetime for these timezones.</para>
         /// </remarks>
         /// <exception cref="ArgumentException">The dateTime parameter represents an invalid time.</exception>
         /// <exception cref="ArgumentNullException">The timeZoneInfo parameter is null.</exception>
@@ -905,21 +907,22 @@ namespace Tool.TimeZoneMap.Thrzn41.Util
 
         /// <summary>
         /// Gets <see cref="DateTimeOffset"/> list for specified <see cref="DateTimeOffset"/> in the specified <see cref="TimeZoneInfo"/>.
-        /// If the result contains two DateTimeOffsets, the index-1 contains standard time.
+        /// If the result contains two DateTimeOffsets, the index-0 contains standard time.
         /// </summary>
-        /// <param name="dateTime"><see cref="DateTime"/> to calculate <see cref="DateTimeOffset"/>.
-        ///   <see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
-        ///   For <see cref="DateTimeKind.Utc"/>, only one <see cref="DateTimeOffset"/> is in the returned list.
-        ///   For <see cref="DateTimeKind.Unspecified"/> or <see cref="DateTimeKind.Local"/>, there is a case that two <see cref="DateTimeOffset"/> items are returned when the datetime is ambiguous.
-        ///   For <see cref="DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.
+        /// <param name="dateTime">
+        ///   <para><see cref="DateTime"/> to calculate <see cref="DateTimeOffset"/>.</para>
+        ///   <para><see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).</para>
+        ///   <para>For <see cref="DateTimeKind.Utc"/>, only one <see cref="DateTimeOffset"/> is in the returned list.</para>
+        ///   <para>For <see cref="DateTimeKind.Unspecified"/> or <see cref="DateTimeKind.Local"/>, there is a case that two <see cref="DateTimeOffset"/> items are returned when the datetime is ambiguous.</para>
+        ///   <para>For <see cref="DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.</para>
         /// </param>
         /// <param name="timeZoneInfo"><see cref="TimeZoneInfo"/> to calculate <see cref="DateTimeOffset"/>.</param>
-        /// <returns><see cref="DateTimeOffset"/>.</returns>
+        /// <returns><see cref="DateTimeOffset"/> list.</returns>
         /// <remarks>
-        ///   <see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).
-        ///   For <see cref="DateTimeKind.Utc"/>, only one <see cref="DateTimeOffset"/> is in the returned list.
-        ///   For <see cref="DateTimeKind.Unspecified"/> or <see cref="DateTimeKind.Local"/>, there is a case that two <see cref="DateTimeOffset"/> items are returned when the datetime is ambiguous.
-        ///   For <see cref="DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.
+        ///   <para><see cref="DateTimeKind"/> is important because there are ambiguous datetimes in some timezones(that has daylight saving time).</para>
+        ///   <para>For <see cref="DateTimeKind.Utc"/>, only one <see cref="DateTimeOffset"/> is in the returned list.</para>
+        ///   <para>For <see cref="DateTimeKind.Unspecified"/> or <see cref="DateTimeKind.Local"/>, there is a case that two <see cref="DateTimeOffset"/> items are returned when the datetime is ambiguous.</para>
+        ///   <para>For <see cref="DateTimeKind.Local"/>, there are more complicated situations that local time zone also have ambiguous datetimes.</para>
         /// </remarks>
         /// <exception cref="ArgumentException">The dateTime parameter represents an invalid time.</exception>
         /// <exception cref="ArgumentNullException">The timeZoneInfo parameter is null.</exception>

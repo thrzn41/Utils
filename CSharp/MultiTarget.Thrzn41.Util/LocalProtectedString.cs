@@ -39,46 +39,49 @@ namespace Thrzn41.Util
     /// <remarks>
     /// This class does not provide in-memory protection and can be used to save/load encrypted string to/from config file or database, etc.
     /// </remarks>
-    public class LocalProtectedString : ProtectedString, IDisposable
+    public class LocalProtectedString : ProtectedString
     {
 
         /// <summary>
         /// Internal encoding of this class.
         /// </summary>
-        private static readonly Encoding ENCODING = UTF8Utils.UTF8_WITHOUT_BOM;
+        internal static readonly Encoding ENCODING = UTF8Utils.UTF8_WITHOUT_BOM;
 
 
-        
-        
+        /// <summary>
+        /// <see cref="LocalProtectedByteArray"/> to encrypt or decrypt.
+        /// </summary>
+        private LocalProtectedByteArray localProtectedByteArray;
+
+        /// <summary>
+        /// Indicates disposed.
+        /// </summary>
+        private bool disposedValue;
+
+
         /// <summary>
         /// <see cref="DataProtectionScope"/> for encrypted data.
         /// </summary>
-        public DataProtectionScope ProtectionScope { get; private set; }
+        public DataProtectionScope ProtectionScope 
+        {
+            get
+            {
+                return this.localProtectedByteArray.ProtectionScope;
+            }
+        }
 
-        /// <summary>
-        /// Gets encrypted data.
-        /// </summary>
-        public byte[] EncryptedData { get; private set; }
 
         /// <summary>
         /// Gets entropy to encrypt or decrypt data.
         /// </summary>
-        public byte[] Entropy { get; private set; }
-
-        /// <summary>
-        /// Gets encrypted data in base64 format.
-        /// </summary>
-        public string EncryptedDataBase64
+        public byte[] Entropy
         {
             get
             {
-#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
-                return Convert.ToBase64String(this.EncryptedData);
-#else
-                return Convert.ToBase64String(this.EncryptedData, Base64FormattingOptions.None);
-#endif
+                return this.localProtectedByteArray.Entropy;
             }
         }
+
 
         /// <summary>
         /// Gets entropy in base64 format.
@@ -101,15 +104,15 @@ namespace Thrzn41.Util
         }
 
 
-
-
         /// <summary>
         /// pvivate Constuctor.
         /// </summary>
-        /// <param name="scope"><see cref="DataProtectionScope"/> for encryption and decryption.</param>
-        private LocalProtectedString(DataProtectionScope scope = DataProtectionScope.CurrentUser)
+        /// <param name="localProtectedByteArray"><see cref="LocalProtectedByteArray"/> for encryption and decryption.</param>
+        internal LocalProtectedString(LocalProtectedByteArray localProtectedByteArray)
         {
-            this.ProtectionScope = scope;
+            this.localProtectedByteArray = localProtectedByteArray;
+
+            this.EncryptedData = this.localProtectedByteArray.EncryptedData;
         }
 
 
@@ -122,16 +125,7 @@ namespace Thrzn41.Util
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromChars(char[] chars, byte[] entropy, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
-            var ps = new LocalProtectedString(scope);
-
-            ps.Entropy = entropy;
-
-            ps.EncryptedData = ProtectedData.Protect(
-                                    ENCODING.GetBytes(chars),
-                                    ps.Entropy,
-                                    scope);
-
-            return ps;
+            return new LocalProtectedString(LocalProtectedByteArray.FromData(ENCODING.GetBytes(chars), entropy, scope));
         }
 
         /// <summary>
@@ -143,7 +137,7 @@ namespace Thrzn41.Util
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromChars(char[] chars, string entropyBase64, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
-            return FromChars(chars, ((entropyBase64 != null) ? Convert.FromBase64String(entropyBase64) : null), scope);
+            return new LocalProtectedString(LocalProtectedByteArray.FromData(ENCODING.GetBytes(chars), entropyBase64, scope));
         }
 
         /// <summary>
@@ -155,7 +149,7 @@ namespace Thrzn41.Util
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromChars(char[] chars, int entropyLength = 128, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
-            return FromChars(chars, ((entropyLength > 0) ? RAND.NextBytes(entropyLength) : null), scope);
+            return new LocalProtectedString(LocalProtectedByteArray.FromData(ENCODING.GetBytes(chars), entropyLength, scope));
         }
 
 
@@ -202,7 +196,7 @@ namespace Thrzn41.Util
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromString(string str, int entropyLength = 128, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
-            return FromString(str, ((entropyLength > 0) ? RAND.NextBytes(entropyLength) : null), scope);
+            return FromString(str, ((entropyLength > 0) ? ProtectedDataUtils.RAND.NextBytes(entropyLength) : null), scope);
         }
 
 
@@ -215,12 +209,7 @@ namespace Thrzn41.Util
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromEncryptedData(byte[] encryptedData, byte[] entropy, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
-            var ps = new LocalProtectedString(scope);
-
-            ps.EncryptedData = encryptedData;
-            ps.Entropy       = entropy;
-
-            return ps;
+            return new LocalProtectedString(LocalProtectedByteArray.FromEncryptedData(encryptedData, entropy, scope));
         }
 
         /// <summary>
@@ -232,15 +221,7 @@ namespace Thrzn41.Util
         /// <returns>ProtectedString instance.</returns>
         public static LocalProtectedString FromEncryptedDataBase64(string encryptedDataBase64, string entropyBase64, DataProtectionScope scope = DataProtectionScope.CurrentUser)
         {
-            byte[] encryptedData = Convert.FromBase64String(encryptedDataBase64);
-            byte[] entropy       = null;
-
-            if( !String.IsNullOrEmpty(entropyBase64) )
-            {
-                entropy = Convert.FromBase64String(entropyBase64);
-            }
-
-            return FromEncryptedData(encryptedData, entropy, scope);
+            return new LocalProtectedString(LocalProtectedByteArray.FromEncryptedDataBase64(encryptedDataBase64, entropyBase64, scope));
         }
 
 
@@ -252,52 +233,59 @@ namespace Thrzn41.Util
         /// <returns>Decrypted char array.</returns>
         public override char[] DecryptToChars()
         {
-            return ENCODING.GetChars(ProtectedData.Unprotect(this.EncryptedData, this.Entropy, this.ProtectionScope));
+            return ENCODING.GetChars(this.localProtectedByteArray.Decrypt());
         }
 
-#region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+        /// <summary>
+        /// Decrypts the data.
+        /// </summary>
+        /// <returns>The decrypted data.</returns>
+        public override byte[] Decrypt()
+        {
+            return this.localProtectedByteArray.Decrypt();
+        }
+
 
 
         /// <summary>
-        /// DIspose.
+        /// Dispose.
         /// </summary>
         /// <param name="disposing">disposing.</param>
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    ClearBytes(this.Entropy);
-                    ClearBytes(this.EncryptedData);
+                    // TODO: dispose managed state (managed objects)
+
+                    this.localProtectedByteArray?.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~LocalProtectedString() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~LocalProtectedString()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
         // }
 
-        // This code added to correctly implement the disposable pattern.
         /// <summary>
         /// Dispose.
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            base.Dispose();
+
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
-#endregion
 
     }
 

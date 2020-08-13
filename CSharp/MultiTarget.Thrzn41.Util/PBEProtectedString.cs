@@ -33,7 +33,7 @@ namespace Thrzn41.Util
     /// <summary>
     /// Provides features for encrypting and decrypting String by password based encryption.
     /// </summary>
-    public class PBEProtectedString : ProtectedString, IDisposable
+    public class PBEProtectedString : ProtectedString
     {
 
         /// <summary>
@@ -48,32 +48,29 @@ namespace Thrzn41.Util
         private static readonly Encoding ENCODING = UTF8Utils.UTF8_WITHOUT_BOM;
 
 
+        /// <summary>
+        /// <see cref="PBEProtectedByteArray"/> to encrypt or decrypt.
+        /// </summary>
+        private PBEProtectedByteArray pbeProtectedByteArray;
 
 
         /// <summary>
-        /// Gets encrypted data.
+        /// Indicate disposed.
         /// </summary>
-        public byte[] EncryptedData { get; private set; }
+        private bool disposedValue;
+
 
         /// <summary>
         /// Gets the salt to encrypt or decrypt data.
         /// </summary>
-        public byte[] Salt { get; private set; }
-
-        /// <summary>
-        /// Gets encrypted data in base64 format.
-        /// </summary>
-        public string EncryptedDataBase64
+        public byte[] Salt
         {
             get
             {
-#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
-                return Convert.ToBase64String(this.EncryptedData);
-#else
-                return Convert.ToBase64String(this.EncryptedData, Base64FormattingOptions.None);
-#endif
+                return this.pbeProtectedByteArray.Salt;
             }
         }
+
 
         /// <summary>
         /// Gets salt in base64 format.
@@ -82,71 +79,21 @@ namespace Thrzn41.Util
         {
             get
             {
-#if (DOTNETSTANDARD1_3 || DOTNETCORE1_0)
-                return Convert.ToBase64String(this.Salt);
-#else
-                return Convert.ToBase64String(this.Salt, Base64FormattingOptions.None);
-#endif
+                return this.pbeProtectedByteArray.SaltBase64;
             }
         }
 
 
-        /// <summary>
-        /// Key for encryption and decryption.
-        /// </summary>
-        private byte[] key;
 
         /// <summary>
-        /// Initialization vector for encryption and decryption.
+        /// pvivate Constuctor.
         /// </summary>
-        private byte[] iv;
-
-        /// <summary>
-        /// Key size.
-        /// </summary>
-        private int keySize;
-
-        /// <summary>
-        /// <see cref="CipherMode"/> for encryption and decryption.
-        /// </summary>
-        private CipherMode cipherMode;
-
-        /// <summary>
-        /// <see cref="PaddingMode"/> for encryption and decryption.
-        /// </summary>
-        private PaddingMode paddingMode;
-
-
-
-
-        /// <summary>
-        /// private constructor.
-        /// </summary>
-        /// <param name="keySize">Key size.</param>
-        /// <param name="cipherMode"><see cref="CipherMode"/> for encryption and decryption.</param>
-        /// <param name="paddingMode"><see cref="PaddingMode"/> for encryption and decryption.</param>
-        private PBEProtectedString(int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
+        /// <param name="pbeProtectedByteArray"><see cref="PBEProtectedByteArray"/> for encryption and decryption.</param>
+        internal PBEProtectedString(PBEProtectedByteArray pbeProtectedByteArray)
         {
-            this.keySize     = keySize;
-            this.cipherMode  = cipherMode;
-            this.paddingMode = paddingMode;
-        }
+            this.pbeProtectedByteArray = pbeProtectedByteArray;
 
-
-
-        /// <summary>
-        /// Generates key and iv.
-        /// </summary>
-        /// <param name="password">Password to generate key and iv.</param>
-        /// <param name="iterationCount">Iteration count to generate.</param>
-        /// <param name="blockSize">Block size.</param>
-        private void generateKey(byte[] password, int iterationCount, int blockSize)
-        {
-            using (var rdb = new Rfc2898DeriveBytes(password, this.Salt, Math.Max(iterationCount, 0)))
-            {
-                this.key = rdb.GetBytes(this.keySize >> 3);
-                this.iv  = rdb.GetBytes(blockSize    >> 3);
-            }
+            this.EncryptedData = this.pbeProtectedByteArray.EncryptedData;
         }
 
 
@@ -163,40 +110,7 @@ namespace Thrzn41.Util
         /// <returns>PBEProtectedString instance.</returns>
         public static PBEProtectedString FromChars(char[] chars, byte[] password, int saltLenght = 128, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
         {
-            var ps = new PBEProtectedString(keySize, cipherMode, paddingMode);
-
-            if (saltLenght > 0)
-            {
-                ps.Salt = RAND.NextBytes(saltLenght);
-            }
-
-            ps.generateKey(password, iterationCount, BLOCK_SIZE);
-
-            using (var aes = Aes.Create())
-            {
-                aes.KeySize   = ps.keySize;
-                aes.BlockSize = BLOCK_SIZE;
-
-                aes.Mode    = ps.cipherMode;
-                aes.Padding = ps.paddingMode;
-
-                aes.Key = ps.key;
-                aes.IV  = ps.iv;
-
-                using (var memory = new MemoryStream())
-                {
-                    using (var encryptor = aes.CreateEncryptor())
-                    using (var stream    = new CryptoStream(memory, encryptor, CryptoStreamMode.Write))
-                    using (var writer    = new StreamWriter(stream, ENCODING))
-                    {
-                        writer.Write(chars);
-                    }
-
-                    ps.EncryptedData = memory.ToArray();
-                }
-            }
-
-            return ps;
+            return new PBEProtectedString(PBEProtectedByteArray.FromData(ENCODING.GetBytes(chars), password, saltLenght, iterationCount, keySize, cipherMode, paddingMode));
         }
 
         /// <summary>
@@ -304,14 +218,7 @@ namespace Thrzn41.Util
         /// <returns>PBEProtectedString instance.</returns>
         public static PBEProtectedString FromEncryptedData(byte[] encryptedData, byte[] password, byte[] salt, int iterationCount = 4096, int keySize = 256, CipherMode cipherMode = CipherMode.CBC, PaddingMode paddingMode = PaddingMode.PKCS7)
         {
-            var ps = new PBEProtectedString(keySize, cipherMode, paddingMode);
-
-            ps.EncryptedData = encryptedData;
-            ps.Salt          = salt;
-
-            ps.generateKey(password, iterationCount, BLOCK_SIZE);
-
-            return ps;
+            return new PBEProtectedString(PBEProtectedByteArray.FromEncryptedData(encryptedData, password, salt, iterationCount, keySize, cipherMode, paddingMode));
         }
 
         /// <summary>
@@ -408,81 +315,60 @@ namespace Thrzn41.Util
         /// <returns>Decrypted char array.</returns>
         public override char[] DecryptToChars()
         {
-            char[] result;
-
-            using (var aes = Aes.Create())
-            {
-                aes.KeySize   = this.keySize;
-                aes.BlockSize = BLOCK_SIZE;
-
-                aes.Mode    = this.cipherMode;
-                aes.Padding = this.paddingMode;
-
-                aes.Key = this.key;
-                aes.IV  = this.iv;
-
-                using (var memory = new MemoryStream())
-                {
-                    using (var decryptor = aes.CreateDecryptor())
-                    using (var encrypted = new MemoryStream(this.EncryptedData))
-                    using (var stream    = new CryptoStream(encrypted, decryptor, CryptoStreamMode.Read))
-                    {
-                        stream.CopyTo(memory);
-                    }
-
-                    result = ENCODING.GetChars(memory.ToArray());
-                }
-
-                return result;
-            }
-
+            return ENCODING.GetChars(this.pbeProtectedByteArray.Decrypt());
         }
 
-#region IDisposable Support
-        private bool disposedValue = false; // To detect redundant calls
+
+        /// <summary>
+        /// Decrypts the data.
+        /// </summary>
+        /// <returns>The decrypted data.</returns>
+        public override byte[] Decrypt()
+        {
+            return this.pbeProtectedByteArray.Decrypt();
+        }
 
 
         /// <summary>
         /// Dispose.
         /// </summary>
         /// <param name="disposing">disposing.</param>
-        protected virtual void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
                 if (disposing)
                 {
-                    ClearBytes(this.iv);
-                    ClearBytes(this.key);
-                    ClearBytes(this.Salt);
-                    ClearBytes(this.EncryptedData);
+                    // TODO: dispose managed state (managed objects)
+
+                    this.pbeProtectedByteArray?.Dispose();
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
-                // TODO: set large fields to null.
-
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
                 disposedValue = true;
             }
         }
 
-        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~PBEProtectedString() {
-        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-        //   Dispose(false);
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~PBEProtectedString()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
         // }
 
-        // This code added to correctly implement the disposable pattern.
+
         /// <summary>
-        /// Dispose.
+        /// dispose.
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            Dispose(true);
-            // TODO: uncomment the following line if the finalizer is overridden above.
-            // GC.SuppressFinalize(this);
+            base.Dispose();
+
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
-#endregion
 
     }
 

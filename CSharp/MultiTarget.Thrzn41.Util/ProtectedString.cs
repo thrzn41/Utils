@@ -32,17 +32,8 @@ namespace Thrzn41.Util
     /// <summary>
     /// Provides features for encrypting and decrypting String.
     /// </summary>
-    public abstract class ProtectedString
+    public abstract class ProtectedString : ProtectedByteArray
     {
-
-        /// <summary>
-        /// Crypto random generator.
-        /// </summary>
-        protected static readonly CryptoRandom RAND = new CryptoRandom();
-
-
-
-
         /// <summary>
         /// Decrypts to char array.
         /// </summary>
@@ -93,8 +84,6 @@ namespace Thrzn41.Util
         }
 
 
-
-
         /// <summary>
         /// Clears array.
         /// </summary>
@@ -104,23 +93,7 @@ namespace Thrzn41.Util
         public static T ClearArray<T>(T[] data)
             where T : struct
         {
-            if (data == null || data.Length == 0)
-            {
-                return default(T);
-            }
-
-            // To prevent to be removed by a future genius compiler optimization,
-            // gets and sets most of array item.
-            // This is not perfect way.
-            data[0] = default(T);
-
-            for (int i = 1; i < data.Length; i++)
-            {
-                data[i] = data[i - 1];
-            }
-
-            // Only for trying to bypass a future genius compiler optimization.
-            return (data[RAND.NextInt(data.Length)]);
+            return ProtectedDataUtils.ClearArray(data);
         }
 
         /// <summary>
